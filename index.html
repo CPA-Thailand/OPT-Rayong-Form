@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>แจ้งยกเลิก Refund / เลื่อนรอบสอบ TOEIC</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#14303a;--muted:#5d727a;--line:#d5dfe2;--bg:#f3f6f6;--card:#fff;--acc:#0e7c86;--acc2:#0a5c64;--warn:#b3261e;--ok:#1b7f4b;--soft:#e4f1f2}
+@media (prefers-color-scheme:dark){:root{--ink:#e6eff1;--muted:#9db2b8;--line:#2c4750;--bg:#0f1e23;--card:#162a31;--acc:#3cb6c1;--acc2:#5fd0da;--warn:#ff8a80;--ok:#64d79b;--soft:#1c3a42}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.65 "Noto Sans Thai",system-ui,sans-serif}
+main{max-width:560px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:1.35rem;margin:8px 0 4px}
+.sub{color:var(--muted);margin:0 0 18px;font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px}
+.bar{display:flex;gap:6px;margin-bottom:16px}.bar i{flex:1;height:4px;border-radius:2px;background:var(--line)}.bar i.on{background:var(--acc)}
+label{display:block;font-weight:500;margin:14px 0 4px}
+input[type=text],input[type=tel],input[type=email]{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:8px;font:inherit;background:var(--bg);color:var(--ink)}
+input:focus,button:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+.hint{font-size:.85rem;color:var(--muted);margin:4px 0 0}
+.err{color:var(--warn);font-size:.85rem;margin:4px 0 0;min-height:1em}
+.note{background:var(--soft);border-left:4px solid var(--acc);padding:10px 12px;border-radius:6px;font-size:.9rem;margin:12px 0}
+.opt{display:flex;gap:12px;align-items:flex-start;padding:14px;border:1.5px solid var(--line);border-radius:10px;margin:10px 0;cursor:pointer}
+.opt:has(input:checked){border-color:var(--acc);background:var(--soft)}
+.opt input{margin-top:6px;accent-color:var(--acc)}
+.opt b{display:block}.opt span{font-size:.88rem;color:var(--muted)}
+.row{display:flex;gap:10px;margin-top:22px}
+button{font:inherit;font-weight:500;padding:12px 18px;border-radius:8px;border:1.5px solid var(--acc);cursor:pointer}
+.pri{background:var(--acc);color:#fff;flex:1}.pri:hover{background:var(--acc2)}
+.sec{background:transparent;color:var(--acc)}
+button:disabled{opacity:.5;cursor:wait}
+dl{margin:0}dt{color:var(--muted);font-size:.85rem;margin-top:10px}dd{margin:0;font-weight:500;word-break:break-all}
+.chk{display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-weight:400}
+.chk input{margin-top:6px;accent-color:var(--acc)}
+.done{text-align:center;padding:12px 0}.done .tick{font-size:2.6rem;color:var(--ok)}
+</style>
+</head>
+<body>
+<main>
+<h1>แจ้งยกเลิก Refund / เลื่อนรอบสอบ TOEIC</h1>
+<p class="sub">ศูนย์สอบ CPA Thailand</p>
+<div class="card"><div class="bar" id="bar"></div><div id="view"></div></div>
+</main>
+<script>
+// ▼ วาง URL ของ Web App (Google Apps Script) ตรงนี้
+const API_URL = "PASTE_YOUR_GAS_WEB_APP_URL_HERE";
+
+const DATES = [
+  {v:"2026-09-28", t:"วันจันทร์ที่ 28 กันยายน 2569", en:"Mon 28 Sep"},
+  {v:"2026-09-29", t:"วันอังคารที่ 29 กันยายน 2569", en:"Tue 29 Sep"},
+  {v:"2026-10-03", t:"วันเสาร์ที่ 3 ตุลาคม 2569", en:"Sat 3 Oct"}
+];
+const S = {step:"info", hist:[], d:{id:"",name:"",phone:"",email:"",option:"",bank:"",acct:"",ack:false,date:""}};
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const STEPS = ["info","option","detail","review"];
+
+function validId(id){
+  if(!/^\d{13}$/.test(id)) return false;
+  let s=0; for(let i=0;i<12;i++) s+=(+id[i])*(13-i);
+  return (11-(s%11))%10 === +id[12];
+}
+function go(step){ S.hist.push(S.step); S.step=step; render(); }
+function back(){ S.step=S.hist.pop()||"info"; render(); }
+function bindBack(){ const b=$("#back"); if(b) b.onclick=back; }
+function api(payload){
+  return fetch(API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)}).then(r=>r.json());
+}
+
+function render(){
+  const i = STEPS.indexOf(S.step);
+  $("#bar").innerHTML = STEPS.map((_,k)=>`<i class="${k<=i?"on":""}"></i>`).join("");
+  $("#bar").style.display = i<0 ? "none" : "flex";
+  ({info,option,detail,review,done})[S.step]();
+  window.scrollTo(0,0);
+}
+
+function info(){
+  const d=S.d;
+  $("#view").innerHTML = `
+  <div class="note">กรอกได้คนละ 1 ครั้งเท่านั้น ระบบตรวจซ้ำจากเลขบัตรประชาชน</div>
+  <label for="id">เลขบัตรประชาชน 13 หลัก *</label>
+  <input id="id" type="text" inputmode="numeric" maxlength="13" autocomplete="off" value="${esc(d.id)}">
+  <p class="err" id="e_id"></p>
+  <label for="name">ชื่อ-นามสกุล (ภาษาอังกฤษ) *</label>
+  <input id="name" type="text" autocomplete="name" placeholder="e.g. SOMCHAI JAIDEE" value="${esc(d.name)}">
+  <p class="err" id="e_name"></p>
+  <label for="phone">เบอร์โทร *</label>
+  <input id="phone" type="tel" inputmode="tel" maxlength="12" value="${esc(d.phone)}">
+  <p class="err" id="e_phone"></p>
+  <label for="email">Email *</label>
+  <input id="email" type="email" autocomplete="email" value="${esc(d.email)}">
+  <p class="err" id="e_email"></p>
+  <div class="row"><button class="pri" id="next">ถัดไป</button></div>`;
+  $("#next").onclick = async () => {
+    const v = {id:$("#id").value.trim(), name:$("#name").value.trim().toUpperCase().replace(/\s+/g," "), phone:$("#phone").value.replace(/[\s-]/g,""), email:$("#email").value.trim()};
+    const e = {
+      id: validId(v.id) ? "" : "เลขบัตรประชาชนไม่ถูกต้อง (ต้องเป็นตัวเลข 13 หลัก)",
+      name: /^[A-Za-z][A-Za-z .'-]+ [A-Za-z][A-Za-z .'-]*$/.test(v.name) ? "" : "กรอกชื่อและนามสกุลเป็นภาษาอังกฤษ",
+      phone: /^0\d{8,9}$/.test(v.phone) ? "" : "เบอร์โทรไม่ถูกต้อง เช่น 0812345678",
+      email: /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v.email) ? "" : "รูปแบบ Email ไม่ถูกต้อง"
+    };
+    for(const k in e) $("#e_"+k).textContent = e[k];
+    if(Object.values(e).some(Boolean)) return;
+    Object.assign(S.d, v);
+    const btn=$("#next"); btn.disabled=true; btn.textContent="กำลังตรวจสอบ...";
+    try{
+      const r = await api({action:"check", id:v.id});
+      if(r.exists){ $("#e_id").textContent="เลขบัตรนี้ส่งข้อมูลแล้ว กรอกซ้ำไม่ได้ หากต้องการแก้ไขให้ติดต่อศูนย์สอบ"; btn.disabled=false; btn.textContent="ถัดไป"; return; }
+    }catch(_){ $("#e_id").textContent="เชื่อมต่อระบบไม่ได้ กรุณาลองใหม่อีกครั้ง"; btn.disabled=false; btn.textContent="ถัดไป"; return; }
+    go("option");
+  };
+}
+
+function option(){
+  const d=S.d;
+  $("#view").innerHTML = `
+  <p style="margin:0 0 4px;font-weight:500">เลือกสิ่งที่ต้องการดำเนินการ *</p>
+  <label class="opt"><input type="radio" name="o" value="refund" ${d.option==="refund"?"checked":""}><div><b>1. ยกเลิกและขอ Refund</b><span>รับเงินคืนเข้าบัญชีธนาคาร</span></div></label>
+  <label class="opt"><input type="radio" name="o" value="move" ${d.option==="move"?"checked":""}><div><b>2. เลื่อนสอบไปรอบพิเศษ 17.00 น.</b><span>เลือกได้ 3 วัน: จันทร์ 28 ก.ย. / อังคาร 29 ก.ย. / เสาร์ 3 ต.ค.</span></div></label>
+  <p class="err" id="e_o"></p>
+  <div class="row"><button class="sec" id="back">ย้อนกลับ</button><button class="pri" id="next">ถัดไป</button></div>`;
+  bindBack();
+  $("#next").onclick = () => {
+    const c = document.querySelector('input[name=o]:checked');
+    if(!c){ $("#e_o").textContent="กรุณาเลือก 1 ตัวเลือก"; return; }
+    if(S.d.option && S.d.option!==c.value){ S.d.date=""; S.d.ack=false; }
+    S.d.option=c.value; go("detail");
+  };
+}
+
+function detail(){
+  const d=S.d;
+  if(d.option==="refund"){
+    $("#view").innerHTML = `
+    <label for="bank">ธนาคาร *</label>
+    <input id="bank" type="text" placeholder="เช่น กสิกรไทย" value="${esc(d.bank)}">
+    <p class="err" id="e_bank"></p>
+    <label for="acct">เลขบัญชีธนาคาร *</label>
+    <input id="acct" type="text" inputmode="numeric" maxlength="15" value="${esc(d.acct)}">
+    <p class="hint">ต้องเป็นเลขบัญชีธนาคารที่มีชื่อบัญชีตรงกับชื่อ-นามสกุลของผู้สอบเท่านั้น (ไม่รับหมายเลข PromptPay)</p>
+    <p class="err" id="e_acct"></p>
+    <label class="chk"><input type="checkbox" id="ack" ${d.ack?"checked":""}><span>รับทราบ: ทางศูนย์สอบจะดำเนินการโอนเงินคืน ภายใน 7 วัน หลังจากได้รับข้อมูล และตรวจสอบอย่างสมบูรณ์แล้ว</span></label>
+    <p class="err" id="e_ack"></p>
+    <div class="row"><button class="sec" id="back">ย้อนกลับ</button><button class="pri" id="next">ถัดไป</button></div>`;
+    bindBack();
+    $("#next").onclick = () => {
+      const bank=$("#bank").value.trim(), acct=$("#acct").value.replace(/[\s-]/g,""), ack=$("#ack").checked;
+      const e={bank:bank?"":"กรอกชื่อธนาคาร", acct:/^\d{10,15}$/.test(acct)?"":"เลขบัญชีต้องเป็นตัวเลข 10-15 หลัก", ack:ack?"":"กรุณากดรับทราบก่อนดำเนินการต่อ"};
+      for(const k in e) $("#e_"+k).textContent=e[k];
+      if(Object.values(e).some(Boolean)) return;
+      Object.assign(S.d,{bank,acct,ack}); go("review");
+    };
+  } else {
+    $("#view").innerHTML = `
+    <div class="note">รอบสอบที่เลื่อนแบบ Computer Based Testing ได้ มีเฉพาะรอบพิเศษ 17.00 น. ใน 3 วันด้านล่างเท่านั้น หากต้องการสอบรอบอื่น หรือเปลี่ยนเป็น Paper Based Testing ให้ยกเลิกและจองสอบใหม่</div>
+    <p style="margin:0 0 4px;font-weight:500">เลือกวันสอบ (รอบ 17.00 น.) *</p>
+    ${DATES.map(x=>`<label class="opt"><input type="radio" name="dt" value="${x.v}" ${d.date===x.v?"checked":""}><div><b>${x.t}</b><span>${x.en} · 5 pm</span></div></label>`).join("")}
+    <p class="err" id="e_dt"></p>
+    <div class="row"><button class="sec" id="back">ย้อนกลับ</button><button class="pri" id="next">ถัดไป</button></div>`;
+    bindBack();
+    $("#next").onclick = () => {
+      const c=document.querySelector('input[name=dt]:checked');
+      if(!c){ $("#e_dt").textContent="กรุณาเลือกวันสอบ"; return; }
+      S.d.date=c.value; go("review");
+    };
+  }
+}
+
+function review(){
+  const d=S.d, dt=DATES.find(x=>x.v===d.date);
+  $("#view").innerHTML = `
+  <p style="margin:0 0 4px;font-weight:500">ตรวจสอบข้อมูลก่อนส่ง</p>
+  <dl>
+    <dt>เลขบัตรประชาชน</dt><dd>${esc(d.id)}</dd>
+    <dt>ชื่อ-นามสกุล</dt><dd>${esc(d.name)}</dd>
+    <dt>เบอร์โทร</dt><dd>${esc(d.phone)}</dd>
+    <dt>Email</dt><dd>${esc(d.email)}</dd>
+    <dt>สิ่งที่ต้องการ</dt><dd>${d.option==="refund"?"ยกเลิกและขอ Refund":"เลื่อนสอบไปรอบพิเศษ 17.00 น."}</dd>
+    ${d.option==="refund"?`<dt>ธนาคาร</dt><dd>${esc(d.bank)}</dd><dt>เลขบัญชี</dt><dd>${esc(d.acct)}</dd>`:`<dt>วันสอบใหม่</dt><dd>${dt?dt.t+" เวลา 17.00 น.":""}</dd>`}
+  </dl>
+  <p class="err" id="e_sub"></p>
+  <div class="row"><button class="sec" id="back">ย้อนกลับ</button><button class="pri" id="send">ยืนยันและส่งข้อมูล</button></div>`;
+  bindBack();
+  $("#send").onclick = async () => {
+    const b=$("#send"); b.disabled=true; b.textContent="กำลังส่งข้อมูล...";
+    try{
+      const r = await api({action:"submit", ...S.d});
+      if(r.ok){ S.hist=[]; S.step="done"; render(); return; }
+      $("#e_sub").textContent = r.message || "ส่งข้อมูลไม่สำเร็จ";
+    }catch(_){ $("#e_sub").textContent="เชื่อมต่อระบบไม่ได้ กรุณาลองใหม่อีกครั้ง"; }
+    b.disabled=false; b.textContent="ยืนยันและส่งข้อมูล";
+  };
+}
+
+function done(){
+  const d=S.d, dt=DATES.find(x=>x.v===d.date);
+  $("#view").innerHTML = `<div class="done"><div class="tick">✓</div>` + (d.option==="refund"
+    ? `<p><b>ทางศูนย์ได้รับข้อมูลการขอยกเลิก Refund ของท่านเรียบร้อยแล้ว</b><br>ทางศูนย์สอบจะดำเนินการโอนเงินคืน ภายใน 7 วัน หลังจากได้รับข้อมูล และตรวจสอบอย่างสมบูรณ์แล้ว</p>`
+    : `<p><b>ส่งข้อมูลเรียบร้อยแล้ว</b><br>ระบบเปลี่ยนรอบสอบของท่านเป็น ${dt?dt.t:""} เวลา 17.00 น. และส่งอีเมลยืนยันไปที่ ${esc(d.email)} แล้ว</p>`) + `</div>`;
+}
+
+render();
+</script>
+</body>
+</html>

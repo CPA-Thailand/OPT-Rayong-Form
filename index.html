@@ -1,207 +1,327 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>แจ้งยกเลิก Refund / เลื่อนรอบสอบ TOEIC</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>แบบฟอร์มยืนยันการจองสอบ TOEIC ระยอง — CPA Thailand</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#14303a;--muted:#5d727a;--line:#d5dfe2;--bg:#f3f6f6;--card:#fff;--acc:#0e7c86;--acc2:#0a5c64;--warn:#b3261e;--ok:#1b7f4b;--soft:#e4f1f2}
-@media (prefers-color-scheme:dark){:root{--ink:#e6eff1;--muted:#9db2b8;--line:#2c4750;--bg:#0f1e23;--card:#162a31;--acc:#3cb6c1;--acc2:#5fd0da;--warn:#ff8a80;--ok:#64d79b;--soft:#1c3a42}}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.65 "Noto Sans Thai",system-ui,sans-serif}
-main{max-width:560px;margin:0 auto;padding:20px 16px 48px}
-h1{font-size:1.35rem;margin:8px 0 4px}
-.sub{color:var(--muted);margin:0 0 18px;font-size:.92rem}
-.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px}
-.bar{display:flex;gap:6px;margin-bottom:16px}.bar i{flex:1;height:4px;border-radius:2px;background:var(--line)}.bar i.on{background:var(--acc)}
-label{display:block;font-weight:500;margin:14px 0 4px}
-input[type=text],input[type=tel],input[type=email]{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:8px;font:inherit;background:var(--bg);color:var(--ink)}
-input:focus,button:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
-.hint{font-size:.85rem;color:var(--muted);margin:4px 0 0}
-.err{color:var(--warn);font-size:.85rem;margin:4px 0 0;min-height:1em}
-.note{background:var(--soft);border-left:4px solid var(--acc);padding:10px 12px;border-radius:6px;font-size:.9rem;margin:12px 0}
-.opt{display:flex;gap:12px;align-items:flex-start;padding:14px;border:1.5px solid var(--line);border-radius:10px;margin:10px 0;cursor:pointer}
-.opt:has(input:checked){border-color:var(--acc);background:var(--soft)}
-.opt input{margin-top:6px;accent-color:var(--acc)}
-.opt b{display:block}.opt span{font-size:.88rem;color:var(--muted)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--b:#1F4E9C;--bd:#12336B;--bl:#E8F0FB;--white:#fff;--gray-bg:#F5F5F5;--gray-line:#DEDEDE;--gray-text:#666;--text:#333;--red:#CC3333}
+body{font-family:'Sarabun',sans-serif;background:var(--gray-bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;font-size:15px}
+.topbar{background:var(--bd);padding:6px 32px;display:flex;justify-content:flex-end;gap:20px}
+.topbar a{color:rgba(255,255,255,.75);font-size:12px;text-decoration:none}.topbar a:hover{color:#fff}
+header{background:var(--white);border-bottom:3px solid var(--b);padding:10px 32px;display:flex;align-items:center;justify-content:space-between}
+.hl{display:flex;align-items:center;gap:14px}.hl img{height:52px;object-fit:contain}
+.brand{border-left:2px solid var(--gray-line);padding-left:14px}
+.brand .name{color:var(--bd);font-size:15px;font-weight:700;line-height:1.2}
+.brand .sub{color:var(--gray-text);font-size:11px;font-weight:300}
+.hr img{height:30px;object-fit:contain}
+.band{background:var(--b);padding:28px 32px 24px;text-align:center}
+.band h1{color:#fff;font-size:clamp(18px,3.6vw,26px);font-weight:700;margin-bottom:6px}
+.band p{color:rgba(255,255,255,.85);font-size:14px}
+.main{flex:1;display:flex;justify-content:center;padding:32px 16px 48px}
+.card{background:var(--white);border:1px solid var(--gray-line);border-top:3px solid var(--b);border-radius:4px;width:100%;max-width:600px;padding:28px 28px 32px;box-shadow:0 2px 12px rgba(0,0,0,.06);align-self:flex-start}
+.steps{display:flex;gap:6px;margin-bottom:18px}.steps i{flex:1;height:4px;border-radius:2px;background:var(--gray-line)}.steps i.on{background:var(--b)}
+.card-title{font-size:14px;font-weight:700;color:var(--bd);margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--gray-line);display:flex;align-items:center;gap:8px}
+.card-title::before{content:'';width:4px;height:16px;background:var(--b);border-radius:2px}
+.field{margin-bottom:18px}
+label.l{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
+label.l .req{color:var(--red);margin-left:2px}
+.hint{font-size:11.5px;color:var(--gray-text);margin-top:4px;line-height:1.6}
+input[type=text],input[type=tel],input[type=email]{width:100%;padding:10px 12px;border:1px solid #ccc;border-radius:3px;font:inherit;font-size:14px;color:var(--text);background:#fff;outline:none;transition:.15s}
+input:focus{border-color:var(--b);box-shadow:0 0 0 2px rgba(31,78,156,.15)}
+input.error{border-color:var(--red);box-shadow:0 0 0 2px rgba(204,51,51,.1)}
+.dob{display:grid;grid-template-columns:1.2fr 1fr 1.2fr;gap:8px}select{padding:10px 8px;border:1px solid #ccc;border-radius:3px;font:inherit;font-size:14px;background:#fff;width:100%}
+.err{color:var(--red);font-size:12.5px;margin-top:4px;min-height:1em}
+.opt{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--gray-line);border-radius:4px;margin-bottom:10px;cursor:pointer;transition:.15s}
+.opt:hover{border-color:var(--b)}.opt:has(input:checked){border-color:var(--b);background:var(--bl)}
+.opt input{margin-top:5px;accent-color:var(--b)}.opt b{display:block;font-size:14px}.opt span{font-size:12.5px;color:var(--gray-text)}
+.notice{border-radius:6px;overflow:hidden;margin-bottom:18px}
+.notice .nh{background:#B71C1C;padding:7px 16px;color:rgba(255,255,255,.95);font-size:12px;font-weight:600}
+.notice .nb{padding:12px 16px;border:1px solid #E8B4B4;border-top:none;border-radius:0 0 6px 6px;background:#FFF5F5;color:#B71C1C;font-size:13px;line-height:1.8}
+.notice .nb li{margin-left:18px}
+.notice.warn .nh{background:#C77700}.notice.warn .nb{background:#FFF8EC;border-color:#EBCB95;color:#7A4A00}
+.chk{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.7;cursor:pointer;margin-bottom:8px}
+.chk input{margin-top:5px;accent-color:var(--b)}
 .row{display:flex;gap:10px;margin-top:22px}
-button{font:inherit;font-weight:500;padding:12px 18px;border-radius:8px;border:1.5px solid var(--acc);cursor:pointer}
-.pri{background:var(--acc);color:#fff;flex:1}.pri:hover{background:var(--acc2)}
-.sec{background:transparent;color:var(--acc)}
-button:disabled{opacity:.5;cursor:wait}
-dl{margin:0}dt{color:var(--muted);font-size:.85rem;margin-top:10px}dd{margin:0;font-weight:500;word-break:break-all}
-.chk{display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-weight:400}
-.chk input{margin-top:6px;accent-color:var(--acc)}
-.done{text-align:center;padding:12px 0}.done .tick{font-size:2.6rem;color:var(--ok)}
+button{font:inherit;font-size:15px;font-weight:600;padding:13px 18px;border-radius:3px;cursor:pointer;border:1px solid var(--b);transition:.15s}
+.pri{flex:1;background:var(--b);color:#fff}.pri:hover{background:var(--bd)}
+.sec{background:#fff;color:var(--bd)}.sec:hover{background:var(--bl)}
+button:disabled{background:#ccc;border-color:#ccc;color:#fff;cursor:not-allowed}
+img.pic{max-width:100%;display:block;margin:10px auto 16px;border:1px solid var(--gray-line);border-radius:4px}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin:8px 0 14px}
+th{background:var(--b);color:#fff;padding:7px}td{padding:7px;border:1px solid var(--gray-line);text-align:center}tr:nth-child(even) td{background:var(--bl)}
+dl{margin:0}dt{color:var(--gray-text);font-size:12px;margin-top:12px}dd{font-weight:600;word-break:break-all}
+.ve{border:1px solid #EEBEBE;border-left:4px solid var(--red);border-radius:3px;background:#FDF5F5;padding:12px 14px;color:#7A2020;font-size:13.5px;margin-top:14px}
+.done{text-align:center;padding:10px 0}.done .tick{width:56px;height:56px;border-radius:50%;background:var(--b);color:#fff;font-size:30px;line-height:56px;margin:0 auto 14px}.done p{line-height:1.8}
+.hide{display:none}
+footer{background:#2B2B2B;padding:18px 32px;text-align:center;font-size:11px;color:rgba(255,255,255,.4);line-height:1.7}
+@media(max-width:520px){.topbar,header,footer{padding-left:16px;padding-right:16px}.band{padding:24px 16px 20px}.card{padding:20px 16px 24px}}
 </style>
 </head>
 <body>
-<main>
-<h1>แจ้งยกเลิก Refund / เลื่อนรอบสอบ TOEIC</h1>
-<p class="sub">ศูนย์สอบ CPA Thailand</p>
-<div class="card"><div class="bar" id="bar"></div><div id="view"></div></div>
-</main>
+<div class="topbar">
+  <a href="tel:022607061">📞 02-260-7061 ต่อ 101</a>
+  <a href="https://cpathailand.co.th" target="_blank" rel="noopener">🌐 cpathailand.co.th</a>
+</div>
+<header>
+  <div class="hl">
+    <img src="logo-cpa.png" alt="CPA Thailand" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlL0U2PIgQ6UVn9C2mhB8HXaf63qBx_OYxdQ&s'}else{this.style.display='none'}">
+    <div class="brand"><div class="name">CPA (Thailand)</div><div class="sub">Center for Professional Assessment</div></div>
+  </div>
+  <div class="hr"><img src="logo-toeic.png" alt="TOEIC" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='https://perpignan.alfmed.com/wp-content/uploads/2025/03/TOEIC-logo-green.png'}else{this.style.display='none'}"></div>
+</header>
+<div class="band"><h1 id="ttl">TOEIC Open Testing Rayong</h1><p id="sub"></p></div>
+<div class="main"><div class="card"><div class="steps" id="bar"></div><div id="view">กำลังโหลด...</div></div></div>
+<footer>&copy; 2026 Center for Professional Assessment (Thailand). All rights reserved.<br>ETS, TOEIC are registered trademarks of ETS, used under license in Thailand.</footer>
+
 <script>
-// ▼ วาง URL ของ Web App (Google Apps Script) ตรงนี้
-const API_URL = "PASTE_YOUR_GAS_WEB_APP_URL_HERE";
-
-const DATES = [
-  {v:"2026-09-28", t:"วันจันทร์ที่ 28 กันยายน 2569", en:"Mon 28 Sep"},
-  {v:"2026-09-29", t:"วันอังคารที่ 29 กันยายน 2569", en:"Tue 29 Sep"},
-  {v:"2026-10-03", t:"วันเสาร์ที่ 3 ตุลาคม 2569", en:"Sat 3 Oct"}
-];
-const S = {step:"info", hist:[], d:{id:"",name:"",phone:"",email:"",option:"",bank:"",acct:"",ack:false,date:""}};
+// ▼ วาง URL Web App (GAS) ของฟอร์มนี้
+const API_URL = "https://script.google.com/macros/s/AKfycbxUhpJA5Bsix9kxgskC_fLvyIoSNbA1vb6VL3f75cXO4vEaazjB0LcEH0iB20Hf25pSFQ/exec";
+// วันสอบ/รอบ/ตารางรับผล/รูป/เปิด-ปิดรับ แก้ที่ชีต Config, Dates, Rounds, ScorePickup (ไม่ต้องแก้โค้ด)
+const MAX_MB = 5;
+let CFG = null;
+const S = {step:"consent",hist:[],d:{consent:false,email:"",idType:"thai",id:"",name:"",gender:"",dob:"",phone:"",date:"",round:"",ackScore:false,orderNo:"",equip:"",equipDetail:"",file:null,needTax:"",tax:{type:"",name:"",taxId:"",address:"",branchType:"",branchNo:""},ackTax:false,ackAll:false}};
 const $ = s => document.querySelector(s);
-const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const STEPS = ["info","option","detail","review"];
+const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const STEPS = ["consent","info","exam","order","equip","tax","notice","review"];
+const title = t => `<div class="card-title">${t}</div>`;
+const nav = (next="ถัดไป",back=true) => `<div class="row">${back?'<button class="sec" id="back">ย้อนกลับ</button>':''}<button class="pri" id="next">${next}</button></div>`;
+const img = u => u ? `<img class="pic" src="${esc(u)}" alt="">` : "";
+const radios = (n,list,cur) => list.map(o=>`<label class="opt"><input type="radio" name="${n}" value="${esc(o.v)}" ${cur===o.v?"checked":""}><div><b>${esc(o.l)}</b></div></label>`).join("");
 
+const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function dobVal(){
+  const M=$("#dobM").value,D=+$("#dobD").value,Y=+$("#dobY").value;
+  if(!M||!D||!Y)return "";
+  const mi=MON.indexOf(M),dt=new Date(Y,mi,D);
+  return dt.getMonth()===mi&&dt.getDate()===D?`${M} ${D}, ${Y}`:"";
+}
 function validId(id){
-  if(!/^\d{13}$/.test(id)) return false;
-  let s=0; for(let i=0;i<12;i++) s+=(+id[i])*(13-i);
-  return (11-(s%11))%10 === +id[12];
+  if(!/^\d{13}$/.test(id))return false;
+  let s=0;for(let i=0;i<12;i++)s+=(+id[i])*(13-i);
+  return (11-(s%11))%10===+id[12];
 }
-function go(step){ S.hist.push(S.step); S.step=step; render(); }
-function back(){ S.step=S.hist.pop()||"info"; render(); }
-function bindBack(){ const b=$("#back"); if(b) b.onclick=back; }
-function api(payload){
-  return fetch(API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)}).then(r=>r.json());
-}
+function go(s){S.hist.push(S.step);S.step=s;render()}
+function back(){S.step=S.hist.pop()||"consent";render()}
+function api(p){return fetch(API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(p)}).then(r=>r.json())}
+function setErr(k,m){const e=$("#e_"+k),i=$("#"+k);if(e)e.textContent=m;if(i)i.classList.toggle("error",!!m)}
+function pick(n){const c=document.querySelector(`input[name=${n}]:checked`);return c?c.value:""}
 
 function render(){
-  const i = STEPS.indexOf(S.step);
-  $("#bar").innerHTML = STEPS.map((_,k)=>`<i class="${k<=i?"on":""}"></i>`).join("");
-  $("#bar").style.display = i<0 ? "none" : "flex";
-  ({info,option,detail,review,done})[S.step]();
+  const i=STEPS.indexOf(S.step);
+  $("#bar").innerHTML=STEPS.map((_,k)=>`<i class="${k<=i?"on":""}"></i>`).join("");
+  $("#bar").style.display=i<0?"none":"flex";
+  ({consent,info,exam,order,equip,tax,notice,review,done})[S.step]();
+  const b=$("#back");if(b)b.onclick=back;
   window.scrollTo(0,0);
 }
 
+function consent(){
+  $("#view").innerHTML=title("การยินยอมใช้ข้อมูล")+`
+  <p style="font-size:13.5px;line-height:1.8;margin-bottom:14px">ในการกรอกแบบฟอร์มนี้ ผู้กรอกได้ยินยอมให้ CPA (Thailand) เข้าถึง รวบรวม และนำข้อมูลไปใช้เป็นหลักฐานสำหรับการสำรองสอบ TOEIC สำหรับออกใบเสร็จรับเงิน/ใบกำกับภาษี และสำหรับติดต่อกับผู้กรอกในกรณีที่เกี่ยวข้องเท่านั้น ทั้งนี้ CPA (Thailand) จะไม่เปิดเผยข้อมูลที่สามารถระบุถึงตัวตนของผู้กรอกได้โดยตรงต่อองค์กรอื่นใดอีก</p>
+  <label class="chk"><input type="checkbox" id="ck" ${S.d.consent?"checked":""}><span>ยินยอม <span style="color:var(--red)">*</span></span></label><div class="err" id="e_ck"></div>`+nav("ถัดไป",false);
+  $("#next").onclick=()=>{ if(!$("#ck").checked){setErr("ck","กรุณากดยินยอมก่อนดำเนินการต่อ");return} S.d.consent=true;go("info") };
+}
+
 function info(){
-  const d=S.d;
-  $("#view").innerHTML = `
-  <div class="note">กรอกได้คนละ 1 ครั้งเท่านั้น ระบบตรวจซ้ำจากเลขบัตรประชาชน</div>
-  <label for="id">เลขบัตรประชาชน 13 หลัก *</label>
-  <input id="id" type="text" inputmode="numeric" maxlength="13" autocomplete="off" value="${esc(d.id)}">
-  <p class="err" id="e_id"></p>
-  <label for="name">ชื่อ-นามสกุล (ภาษาอังกฤษ) *</label>
-  <input id="name" type="text" autocomplete="name" placeholder="e.g. SOMCHAI JAIDEE" value="${esc(d.name)}">
-  <p class="err" id="e_name"></p>
-  <label for="phone">เบอร์โทร *</label>
-  <input id="phone" type="tel" inputmode="tel" maxlength="12" value="${esc(d.phone)}">
-  <p class="err" id="e_phone"></p>
-  <label for="email">Email *</label>
-  <input id="email" type="email" autocomplete="email" value="${esc(d.email)}">
-  <p class="err" id="e_email"></p>
-  <div class="row"><button class="pri" id="next">ถัดไป</button></div>`;
-  $("#next").onclick = async () => {
-    const v = {id:$("#id").value.trim(), name:$("#name").value.trim().toUpperCase().replace(/\s+/g," "), phone:$("#phone").value.replace(/[\s-]/g,""), email:$("#email").value.trim()};
-    const e = {
-      id: validId(v.id) ? "" : "เลขบัตรประชาชนไม่ถูกต้อง (ต้องเป็นตัวเลข 13 หลัก)",
-      name: /^[A-Za-z][A-Za-z .'-]+ [A-Za-z][A-Za-z .'-]*$/.test(v.name) ? "" : "กรอกชื่อและนามสกุลเป็นภาษาอังกฤษ",
-      phone: /^0\d{8,9}$/.test(v.phone) ? "" : "เบอร์โทรไม่ถูกต้อง เช่น 0812345678",
-      email: /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v.email) ? "" : "รูปแบบ Email ไม่ถูกต้อง"
-    };
-    for(const k in e) $("#e_"+k).textContent = e[k];
-    if(Object.values(e).some(Boolean)) return;
-    Object.assign(S.d, v);
-    const btn=$("#next"); btn.disabled=true; btn.textContent="กำลังตรวจสอบ...";
-    try{
-      const r = await api({action:"check", id:v.id});
-      if(r.exists){ $("#e_id").textContent="เลขบัตรนี้ส่งข้อมูลแล้ว กรอกซ้ำไม่ได้ หากต้องการแก้ไขให้ติดต่อศูนย์สอบ"; btn.disabled=false; btn.textContent="ถัดไป"; return; }
-    }catch(_){ $("#e_id").textContent="เชื่อมต่อระบบไม่ได้ กรุณาลองใหม่อีกครั้ง"; btn.disabled=false; btn.textContent="ถัดไป"; return; }
-    go("option");
+  const d=S.d,pm=(d.dob||"").match(/^(\w{3}) (\d{1,2}), (\d{4})$/)||[];
+  $("#view").innerHTML=title("ข้อมูลของผู้สอบ")+`
+  <div class="notice warn"><div class="nh">คำเตือน</div><div class="nb">กรุณากรอกข้อมูล<b>ของผู้สอบ</b>ด้วยความระมัดระวัง และตรวจสอบให้ถูกต้องก่อนส่งแบบฟอร์ม</div></div>
+  <div class="field"><label class="l" for="email">อีเมล <span class="req">*</span></label><input id="email" type="email" autocomplete="email" value="${esc(d.email)}"><div class="err" id="e_email"></div></div>
+  <div class="field"><label class="l">สัญชาติ / Nationality <span class="req">*</span></label>${radios("idType",[{v:"thai",l:"ผู้สอบสัญชาติไทย / Thai"},{v:"foreign",l:"ผู้สอบต่างชาติ / Non-Thai (Passport)"}],d.idType)}</div>
+  <div class="field"><label class="l" for="id" id="idLbl"></label><input id="id" type="text" autocomplete="off" value="${esc(d.id)}"><div class="hint" id="idHint"></div><div class="err" id="e_id"></div></div>
+  <div class="field"><label class="l" for="name">ชื่อ-นามสกุล ภาษาอังกฤษ ไม่ต้องใส่คำนำหน้า <span class="req">*</span></label><input id="name" type="text" autocomplete="name" value="${esc(d.name)}"><div class="hint">สะกดให้ตรงตามบัตรประชาชน ใบขับขี่สมาร์ทการ์ด หรือ Passport ตัวอย่าง Jaidee Meesuk / Peter Louise Butler</div><div class="err" id="e_name"></div></div>
+  <div class="field"><label class="l">เพศ</label>${radios("gender",[{v:"Male",l:"Male"},{v:"Female",l:"Female"}],d.gender)}</div>
+  <div class="field"><label class="l" for="dob">วันเกิดของผู้สอบ (เดือน/วัน/ปี ค.ศ.) <span class="req">*</span></label><div class="dob"><select id="dobM"><option value="">เดือน</option>${MON.map(m=>`<option ${pm[1]===m?"selected":""}>${m}</option>`).join("")}</select><select id="dobD"><option value="">วัน</option>${Array.from({length:31},(_,i)=>i+1).map(n=>`<option ${+pm[2]===n?"selected":""}>${n}</option>`).join("")}</select><select id="dobY"><option value="">ปี ค.ศ.</option>${Array.from({length:81},(_,i)=>new Date().getFullYear()-10-i).map(n=>`<option ${+pm[3]===n?"selected":""}>${n}</option>`).join("")}</select></div><div class="hint">เลือกเดือน วัน และปี ค.ศ. ระบบจะบันทึกในรูปแบบเดียวกัน เช่น Dec 25, 1999</div><div class="err" id="e_dob"></div></div>
+  <div class="field"><label class="l" for="phone">เบอร์โทรติดต่อของผู้สอบ <span class="req">*</span></label><input id="phone" type="tel" inputmode="numeric" maxlength="10" value="${esc(d.phone)}"><div class="hint">ตัวอย่าง 0812345678</div><div class="err" id="e_phone"></div></div>`+nav();
+  const idUi=()=>{const t=pick("idType")==="thai";$("#idLbl").innerHTML=t?'เลขบัตรประจำตัวประชาชน 13 หลัก ของผู้สอบ <span class="req">*</span>':'เลขหนังสือเดินทาง / Passport ID <span class="req">*</span>';$("#idHint").textContent=t?"ตัวอย่าง 1123456789999":"Example: XX1234567";$("#id").maxLength=t?13:15;$("#id").inputMode=t?"numeric":"text"};
+  document.querySelectorAll("input[name=idType]").forEach(r=>r.onchange=idUi);idUi();
+  $("#next").onclick=async()=>{
+    const it=pick("idType")||"thai",v={email:$("#email").value.trim(),idType:it,id:it==="thai"?$("#id").value.replace(/\D/g,""):$("#id").value.replace(/[^A-Za-z0-9]/g,"").toUpperCase(),name:$("#name").value.trim().replace(/\s+/g," "),gender:pick("gender"),dob:dobVal(),phone:$("#phone").value.replace(/\D/g,"")};
+    const e={
+      email:/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email)?"":"รูปแบบอีเมลไม่ถูกต้อง",
+      id:(it==="thai"?validId(v.id):/^[A-Z0-9]{6,15}$/.test(v.id))?"":(it==="thai"?"เลขบัตรประชาชนไม่ถูกต้อง (ต้องเป็นตัวเลข 13 หลัก)":"เลขพาสปอร์ตไม่ถูกต้อง (ตัวอักษร/ตัวเลข 6-15 ตัว)"),
+      name:/^[A-Za-z][A-Za-z .'-]*\s[A-Za-z][A-Za-z .'-]*$/.test(v.name)?"":"กรอกชื่อและนามสกุลเป็นภาษาอังกฤษ",
+      dob:v.dob?"":"กรุณาเลือกวัน เดือน ปีเกิดให้ถูกต้อง",
+      phone:/^0\d{9}$/.test(v.phone)?"":"เบอร์โทรต้องมี 10 หลัก เช่น 0812345678"};
+    for(const k in e)setErr(k,e[k]);
+    if(Object.values(e).some(Boolean))return;
+    Object.assign(S.d,v);
+    const b=$("#next");b.disabled=true;b.textContent="กำลังตรวจสอบ...";
+    try{const r=await api({action:"check",id:v.id});
+      if(r.exists){setErr("id","เลขบัตรนี้ส่งข้อมูลแล้ว กรอกซ้ำไม่ได้ หากต้องการแก้ไขให้ติดต่อศูนย์สอบ");b.disabled=false;b.textContent="ถัดไป";return}
+    }catch(_){setErr("id","เชื่อมต่อระบบไม่ได้ กรุณาลองใหม่อีกครั้ง");b.disabled=false;b.textContent="ถัดไป";return}
+    go("exam");
   };
 }
 
-function option(){
-  const d=S.d;
-  $("#view").innerHTML = `
-  <p style="margin:0 0 4px;font-weight:500">เลือกสิ่งที่ต้องการดำเนินการ *</p>
-  <label class="opt"><input type="radio" name="o" value="refund" ${d.option==="refund"?"checked":""}><div><b>1. ยกเลิกและขอ Refund</b><span>รับเงินคืนเข้าบัญชีธนาคาร</span></div></label>
-  <label class="opt"><input type="radio" name="o" value="move" ${d.option==="move"?"checked":""}><div><b>2. เลื่อนสอบไปรอบพิเศษ 17.00 น.</b><span>เลือกได้ 3 วัน: จันทร์ 28 ก.ย. / อังคาร 29 ก.ย. / เสาร์ 3 ต.ค.</span></div></label>
-  <p class="err" id="e_o"></p>
-  <div class="row"><button class="sec" id="back">ย้อนกลับ</button><button class="pri" id="next">ถัดไป</button></div>`;
-  bindBack();
-  $("#next").onclick = () => {
-    const c = document.querySelector('input[name=o]:checked');
-    if(!c){ $("#e_o").textContent="กรุณาเลือก 1 ตัวเลือก"; return; }
-    if(S.d.option && S.d.option!==c.value){ S.d.date=""; S.d.ack=false; }
-    S.d.option=c.value; go("detail");
+function exam(){
+  const d=S.d;if(CFG.dates.length===1&&!d.date)d.date=CFG.dates[0].v;
+  $("#view").innerHTML=title("วันสอบ รอบสอบ และการรับผลสอบ / TEST DATE & SCORE PICK-UP")+`
+  <div class="field"><label class="l">ระบุวันสอบให้ตรงกับรอบที่ท่านสั่งซื้อ <span class="req">*</span></label>${radios("date",CFG.dates.map(x=>({v:x.v,l:x.l})),d.date)}<div class="err" id="e_date"></div></div>
+  <div class="field"><label class="l">ระบุรอบสอบให้ตรงกับรอบที่ท่านสั่งซื้อ <span class="req">*</span></label>${radios("round",CFG.rounds.map(x=>({v:x.v,l:x.l})),d.round)}<div class="err" id="e_round"></div></div>
+  <div class="notice warn" style="margin-top:20px"><div class="nh">SCORE PICK-UP / ผลคะแนนสอบ</div><div class="nb">${esc(CFG.emsNotice)}</div></div>
+  <label class="chk"><input type="checkbox" id="ackScore" ${d.ackScore?"checked":""}><span>Acknowledge / รับทราบ: ผลสอบส่งทาง EMS เท่านั้น ผู้สอบเขียนจ่าหน้าซองที่อยู่สำหรับจัดส่งผลสอบด้วยตนเองในวันสอบ <span style="color:var(--red)">*</span></span></label><div class="err" id="e_ack"></div>`+nav();
+  $("#next").onclick=()=>{
+    const v={date:pick("date"),round:pick("round"),ackScore:$("#ackScore").checked};
+    setErr("date",v.date?"":"กรุณาเลือกวันสอบ");setErr("round",v.round?"":"กรุณาเลือกรอบสอบ");setErr("ack",v.ackScore?"":"กรุณากดรับทราบก่อนดำเนินการต่อ");
+    if(!v.date||!v.round||!v.ackScore)return;
+    Object.assign(S.d,v);go("order");
   };
 }
 
-function detail(){
+function order(){
+  $("#view").innerHTML=title("หมายเลขคำสั่งซื้อ")+`
+  <div class="field"><label class="l" for="orderNo">กรุณาระบุหมายเลขคำสั่งซื้อ / Order No. ของท่าน <span class="req">*</span></label>
+  <input id="orderNo" type="text" inputmode="numeric" maxlength="30" value="${esc(S.d.orderNo)}"><div class="hint">ตัวอย่าง 2024051757316888 (ระบุเฉพาะตัวเลข)</div><div class="err" id="e_orderNo"></div></div>${img(CFG.images.order)}`+nav();
+  $("#next").onclick=()=>{
+    const v=$("#orderNo").value.replace(/\s/g,"");
+    if(!/^\d{6,}$/.test(v)){setErr("orderNo","หมายเลขคำสั่งซื้อต้องเป็นตัวเลขเท่านั้น");return}
+    S.d.orderNo=v;go("equip");
+  };
+}
+
+function equip(){
   const d=S.d;
-  if(d.option==="refund"){
-    $("#view").innerHTML = `
-    <label for="bank">ธนาคาร *</label>
-    <input id="bank" type="text" placeholder="เช่น กสิกรไทย" value="${esc(d.bank)}">
-    <p class="err" id="e_bank"></p>
-    <label for="acct">เลขบัญชีธนาคาร *</label>
-    <input id="acct" type="text" inputmode="numeric" maxlength="15" value="${esc(d.acct)}">
-    <p class="hint">ต้องเป็นเลขบัญชีธนาคารที่มีชื่อบัญชีตรงกับชื่อ-นามสกุลของผู้สอบเท่านั้น (ไม่รับหมายเลข PromptPay)</p>
-    <p class="err" id="e_acct"></p>
-    <label class="chk"><input type="checkbox" id="ack" ${d.ack?"checked":""}><span>รับทราบ: ทางศูนย์สอบจะดำเนินการโอนเงินคืน ภายใน 7 วัน หลังจากได้รับข้อมูล และตรวจสอบอย่างสมบูรณ์แล้ว</span></label>
-    <p class="err" id="e_ack"></p>
-    <div class="row"><button class="sec" id="back">ย้อนกลับ</button><button class="pri" id="next">ถัดไป</button></div>`;
-    bindBack();
-    $("#next").onclick = () => {
-      const bank=$("#bank").value.trim(), acct=$("#acct").value.replace(/[\s-]/g,""), ack=$("#ack").checked;
-      const e={bank:bank?"":"กรอกชื่อธนาคาร", acct:/^\d{10,15}$/.test(acct)?"":"เลขบัญชีต้องเป็นตัวเลข 10-15 หลัก", ack:ack?"":"กรุณากดรับทราบก่อนดำเนินการต่อ"};
-      for(const k in e) $("#e_"+k).textContent=e[k];
-      if(Object.values(e).some(Boolean)) return;
-      Object.assign(S.d,{bank,acct,ack}); go("review");
-    };
-  } else {
-    $("#view").innerHTML = `
-    <div class="note">รอบสอบที่เลื่อนแบบ Computer Based Testing ได้ มีเฉพาะรอบพิเศษ 17.00 น. ใน 3 วันด้านล่างเท่านั้น หากต้องการสอบรอบอื่น หรือเปลี่ยนเป็น Paper Based Testing ให้ยกเลิกและจองสอบใหม่</div>
-    <p style="margin:0 0 4px;font-weight:500">เลือกวันสอบ (รอบ 17.00 น.) *</p>
-    ${DATES.map(x=>`<label class="opt"><input type="radio" name="dt" value="${x.v}" ${d.date===x.v?"checked":""}><div><b>${x.t}</b><span>${x.en} · 5 pm</span></div></label>`).join("")}
-    <p class="err" id="e_dt"></p>
-    <div class="row"><button class="sec" id="back">ย้อนกลับ</button><button class="pri" id="next">ถัดไป</button></div>`;
-    bindBack();
-    $("#next").onclick = () => {
-      const c=document.querySelector('input[name=dt]:checked');
-      if(!c){ $("#e_dt").textContent="กรุณาเลือกวันสอบ"; return; }
-      S.d.date=c.value; go("review");
-    };
-  }
+  $("#view").innerHTML=title("อุปกรณ์เสริมพิเศษทางการแพทย์")+`
+  <label class="l">ผู้สอบมีความจำเป็นต้องใช้อุปกรณ์เสริมพิเศษทางการแพทย์ หรืออุปกรณ์อื่นๆ ที่จำเป็นต่อร่างกายไม่ว่าชนิดใดก็ตาม ทั้งแบบชั่วคราวและถาวร เช่น อุปกรณ์ตามกระดูก (เฝือก) อุปกรณ์ช่วยฟัง เครื่องกระตุ้นหัวใจ Insulin Pump เก้าอี้มีล้อสำหรับผู้ป่วย (Wheelchair) <span class="req">*</span></label>
+  ${radios("equip",[{v:"yes",l:"มี"},{v:"no",l:"ไม่มี"}],d.equip)}<div class="err" id="e_equip"></div>
+  <div id="eq" class="${d.equip==="yes"?"":"hide"}">
+    <div class="field"><label class="l" for="equipDetail">โปรดระบุอุปกรณ์ที่ต้องใช้ในระหว่างการสอบ <span class="req">*</span></label><input id="equipDetail" type="text" value="${esc(d.equipDetail)}"><div class="err" id="e_equipDetail"></div></div>
+    <div class="field"><label class="l">แนบหลักฐานภาพถ่ายอุปกรณ์ หรือใบรับรองแพทย์อายุไม่เกิน 2 ปี หรือบัตรประจำตัวผู้พิการ <span class="req">*</span></label>
+    <input type="file" id="file" accept="image/*,.pdf"><div class="hint" id="fname">รูปภาพหรือ PDF ไม่เกิน ${MAX_MB} MB ${d.file?"— แนบแล้ว: "+esc(d.file.name):""}</div><div class="err" id="e_file"></div></div>
+  </div>`+nav();
+  document.querySelectorAll("input[name=equip]").forEach(r=>r.onchange=()=>$("#eq").classList.toggle("hide",r.value!=="yes"));
+  $("#file").onchange=e=>{
+    const f=e.target.files[0];if(!f)return;
+    if(f.size>MAX_MB*1048576){e.target.value="";setErr("file",`ไฟล์ต้องไม่เกิน ${MAX_MB} MB`);return}
+    setErr("file","");const rd=new FileReader();
+    rd.onload=()=>{S.d.file={name:f.name,type:f.type,data:rd.result.split(",")[1]};$("#fname").textContent="แนบแล้ว: "+f.name};
+    rd.readAsDataURL(f);
+  };
+  $("#next").onclick=()=>{
+    const v=pick("equip");
+    if(!v){setErr("equip","กรุณาเลือกคำตอบ");return}
+    if(v==="yes"){
+      const t=$("#equipDetail").value.trim();
+      setErr("equipDetail",t?"":"กรุณาระบุอุปกรณ์");setErr("file",S.d.file?"":"กรุณาแนบไฟล์หลักฐาน");
+      if(!t||!S.d.file)return;S.d.equipDetail=t;
+    }else{S.d.equipDetail="";S.d.file=null}
+    S.d.equip=v;go("tax");
+  };
+}
+
+const tin=(id,lbl,hint,val,ph="")=>`<div class="field"><label class="l" for="${id}">${lbl} <span class="req">*</span></label><input id="${id}" type="text" value="${esc(val)}" placeholder="${ph}">${hint?`<div class="hint">${hint}</div>`:""}<div class="err" id="e_${id}"></div></div>`;
+function tax(){
+  const d=S.d,t=d.tax;
+  $("#view").innerHTML=title("การขอใบเสร็จรับเงิน/ใบกำกับภาษี / RECEIPT/TAX INVOICE")+`
+  <div class="notice warn"><div class="nh">โปรดอ่าน / Please note</div><div class="nb">ส่วนนี้ไม่ใช่การกรอกข้อมูลเพื่อส่งผลคะแนน เฉพาะผู้ที่ต้องการใบเสร็จรับเงิน/ใบกำกับภาษีเพื่อนำไปเบิกค่าใช้จ่ายกับองค์กรหรือสถาบันเท่านั้น<br>This section is only for Test Takers who need a receipt/tax invoice.</div></div>
+  <label class="l">ผู้สอบมีความต้องการขอใบเสร็จรับเงิน/ใบกำกับภาษี หรือไม่ <span class="req">*</span></label>
+  ${radios("needTax",[{v:"yes",l:"Yes / ต้องการใบเสร็จรับเงิน / ใบกำกับภาษี"},{v:"no",l:"No / ไม่ต้องการ"}],d.needTax)}<div class="err" id="e_needTax"></div>
+  <div id="tx" class="${d.needTax==="yes"?"":"hide"}">
+   <label class="l" style="margin-top:14px">ขอใบเสร็จรับเงิน/ใบกำกับภาษีในนาม / ON BEHALF OF <span class="req">*</span></label>
+   ${radios("taxType",[{v:"company",l:"COMPANY / ORGANIZATION / ในนามองค์กร"},{v:"personal",l:"PERSONAL / ในนามส่วนบุคคล"}],t.type)}<div class="err" id="e_taxType"></div>
+   <div id="tc" class="${t.type==="company"?"":"hide"}">${img(CFG.images.taxOrg)}
+    ${tin("taxName","ชื่อองค์กรที่ต้องการให้ระบุในใบเสร็จ/ใบกำกับภาษี (ภาษาอังกฤษเท่านั้น)","",t.name)}
+    ${tin("taxId","หมายเลขประจำตัวผู้เสียภาษี 13 หลัก","",t.taxId)}
+    <label class="l">สำนักงาน / FOR ORGANIZATION <span class="req">*</span></label>
+    ${radios("branchType",[{v:"head",l:"Head Office / สำนักงานใหญ่"},{v:"branch",l:"Branch / สำนักงานสาขา"}],t.branchType)}<div class="err" id="e_branchType"></div>
+    <div id="tb" class="${t.branchType==="branch"?"":"hide"}">${tin("branchNo","เลขสาขา / Branch No.","",t.branchNo)}</div></div>
+   <div id="tp" class="${t.type==="personal"?"":"hide"}">${img(CFG.images.taxPersonal)}</div>
+   <div id="ta" class="${t.type?"":"hide"}">${tin("taxAddr","ที่อยู่สำหรับออกใบเสร็จ/ใบกำกับภาษี (ภาษาอังกฤษเท่านั้น)","",t.address)}
+    ${img(CFG.images.taxInfo)}
+    <label class="chk"><input type="checkbox" id="ackTax" ${d.ackTax?"checked":""}><span>I acknowledge all important information for Tax Invoice Request. ข้าพเจ้ารับทราบหมายเหตุสำคัญสำหรับการขอใบกำกับภาษีเรียบร้อยแล้ว <span style="color:var(--red)">*</span></span></label><div class="err" id="e_ackTax"></div></div>
+  </div>`+nav();
+  const sh=()=>{const y=pick("needTax")==="yes",ty=pick("taxType");
+    $("#tx").classList.toggle("hide",!y);$("#tc").classList.toggle("hide",ty!=="company");$("#tp").classList.toggle("hide",ty!=="personal");
+    $("#ta").classList.toggle("hide",!ty);$("#tb").classList.toggle("hide",pick("branchType")!=="branch")};
+  document.querySelectorAll("input[type=radio]").forEach(r=>r.addEventListener("change",sh));
+  $("#next").onclick=()=>{
+    const nt=pick("needTax");
+    if(!nt){setErr("needTax","กรุณาเลือกคำตอบ");return}
+    if(nt==="no"){S.d.needTax="no";S.d.ackTax=false;go("notice");return}
+    const ty=pick("taxType"),v={type:ty,name:"",taxId:"",address:"",branchType:"",branchNo:""},e={};
+    e.taxType=ty?"":"กรุณาเลือกในนามองค์กรหรือบุคคล";
+    if(ty){
+      v.address=$("#taxAddr").value.trim();e.taxAddr=/^[\x20-\x7E]{8,}$/.test(v.address)?"":"กรอกที่อยู่เป็นภาษาอังกฤษ";
+      e.ackTax=$("#ackTax").checked?"":"กรุณากดรับทราบก่อนดำเนินการต่อ";
+      if(ty==="company"){
+        v.name=$("#taxName").value.trim();v.taxId=$("#taxId").value.replace(/\D/g,"");v.branchType=pick("branchType");
+        e.taxName=/^[\x20-\x7E]{2,}$/.test(v.name)?"":"กรอกชื่อองค์กรเป็นภาษาอังกฤษ";
+        e.taxId=/^\d{13}$/.test(v.taxId)?"":"ต้องเป็นตัวเลข 13 หลัก";
+        e.branchType=v.branchType?"":"กรุณาเลือกสำนักงาน";
+        if(v.branchType==="branch"){v.branchNo=$("#branchNo").value.trim();e.branchNo=v.branchNo?"":"กรุณาระบุเลขสาขา"}
+      }
+    }
+    for(const k in e)setErr(k,e[k]);
+    if(Object.values(e).some(Boolean))return;
+    Object.assign(S.d,{needTax:"yes",tax:v,ackTax:true});go("notice");
+  };
+}
+
+function notice(){
+  $("#view").innerHTML=title("การรายงานตัวและหลักฐานที่ต้องแสดงในวันสอบ / TEST DAY PROCEDURES")+`
+  <p style="font-size:13.5px;line-height:1.8;margin-bottom:12px"><b>สถานที่สอบ:</b> ${esc(CFG.venue)}<br>${CFG.rounds.map(x=>esc(x.l)).join("<br>")}</p>
+  <p style="font-size:13.5px;line-height:1.8;margin-bottom:12px"><b>หลักฐานที่ต้องแสดง:</b> บัตรประจำตัวประชาชนไทย, ใบขับขี่สมาร์ทการ์ด (บัตรแข็ง) หรือหนังสือเดินทาง (Passport) ฉบับจริง สภาพสมบูรณ์ ข้อมูลและรูปถ่ายเป็นปัจจุบัน ชัดเจนไม่เลือนราง และไม่หมดอายุ</p>
+  ${img(CFG.images.items)}
+  <div class="notice"><div class="nh">โปรดอ่านและรับทราบ / Please read and acknowledge</div><div class="nb"><ul>
+   <li>ผู้สอบต้องมารายงานตัว ณ สถานที่สอบ <b>ก่อนเวลารอบสอบ 1 ชั่วโมง</b> เคาน์เตอร์เช็คอินจะปิดให้บริการ 15 นาที ก่อนถึงเวลารอบสอบ พร้อมแสดงหลักฐานให้ครบถ้วน หากมาไม่ทันเวลา ศูนย์สอบฯ ขอสงวนสิทธิ์ปฏิเสธให้เข้าห้องสอบ และไม่คืนค่าสอบในทุกกรณี</li>
+   <li>หลังชำระเงินแล้วไม่สามารถยกเลิกหรือเปลี่ยนแปลงการจองสอบ และไม่คืนค่าสอบในทุกกรณี</li>
+   <li>หลังส่งคำตอบแล้ว <b>ไม่สามารถเปลี่ยนแปลงผู้เข้าสอบและรอบสอบได้</b>ในทุกกรณี</li>
+   <li>เมื่อส่งแบบฟอร์มสำเร็จ ระบบจะส่งสรุปข้อมูลไปยังอีเมลที่กรอกไว้</li>
+   <li>CPA Call Center: 02-260-7061 ต่อ 101 (จันทร์-เสาร์ 08:00-16:30 น.)</li></ul></div></div>
+  <label class="chk"><input type="checkbox" id="ack" ${S.d.ackAll?"checked":""}><span>ข้าพเจ้าได้อ่านและรับทราบข้อมูลและคำเตือนทั้งหมดข้างต้น / I have read and acknowledged all of the above <span style="color:var(--red)">*</span></span></label><div class="err" id="e_ack"></div>`+nav();
+  $("#next").onclick=()=>{ if(!$("#ack").checked){setErr("ack","กรุณากดรับทราบก่อนดำเนินการต่อ");return} S.d.ackAll=true;go("review") };
 }
 
 function review(){
-  const d=S.d, dt=DATES.find(x=>x.v===d.date);
-  $("#view").innerHTML = `
-  <p style="margin:0 0 4px;font-weight:500">ตรวจสอบข้อมูลก่อนส่ง</p>
-  <dl>
-    <dt>เลขบัตรประชาชน</dt><dd>${esc(d.id)}</dd>
-    <dt>ชื่อ-นามสกุล</dt><dd>${esc(d.name)}</dd>
-    <dt>เบอร์โทร</dt><dd>${esc(d.phone)}</dd>
-    <dt>Email</dt><dd>${esc(d.email)}</dd>
-    <dt>สิ่งที่ต้องการ</dt><dd>${d.option==="refund"?"ยกเลิกและขอ Refund":"เลื่อนสอบไปรอบพิเศษ 17.00 น."}</dd>
-    ${d.option==="refund"?`<dt>ธนาคาร</dt><dd>${esc(d.bank)}</dd><dt>เลขบัญชี</dt><dd>${esc(d.acct)}</dd>`:`<dt>วันสอบใหม่</dt><dd>${dt?dt.t+" เวลา 17.00 น.":""}</dd>`}
-  </dl>
-  <p class="err" id="e_sub"></p>
-  <div class="row"><button class="sec" id="back">ย้อนกลับ</button><button class="pri" id="send">ยืนยันและส่งข้อมูล</button></div>`;
-  bindBack();
-  $("#send").onclick = async () => {
-    const b=$("#send"); b.disabled=true; b.textContent="กำลังส่งข้อมูล...";
+  const d=S.d,t=d.tax,dl=(CFG.dates.find(x=>x.v===d.date)||{}).l,rl=(CFG.rounds.find(x=>x.v===d.round)||{}).l;
+  const row=(k,v)=>`<dt>${k}</dt><dd>${esc(v)}</dd>`;
+  $("#view").innerHTML=title("ตรวจสอบข้อมูล")+`<dl>
+    ${row("อีเมล",d.email)}${row(d.idType==="thai"?"เลขบัตรประชาชน":"Passport ID",d.id)}${row("ชื่อ-นามสกุล",d.name)}${row("เพศ",d.gender||"-")}${row("วันเกิด",d.dob)}${row("เบอร์โทรศัพท์",d.phone)}
+    ${row("วันสอบ",dl)}${row("รอบสอบ",rl)}${row("สถานที่สอบ",CFG.venue)}${row("หมายเลขคำสั่งซื้อ",d.orderNo)}
+    ${row("อุปกรณ์เสริมพิเศษ",d.equip==="yes"?d.equipDetail+" (แนบไฟล์: "+d.file.name+")":"ไม่มี")}
+    ${row("ขอใบเสร็จ/ใบกำกับภาษี",d.needTax==="yes"?"ต้องการ":"ไม่ต้องการ")}
+    ${d.needTax==="yes"?row("ในนาม",t.type==="company"?"องค์กร":"บุคคล")+(t.type==="company"?row("ชื่อองค์กร",t.name)+row("เลขประจำตัวผู้เสียภาษี",t.taxId)+row("สำนักงาน",t.branchType==="head"?"Head Office":"Branch "+t.branchNo):"")+row("ที่อยู่",t.address):""}</dl>
+    <p class="hint" style="margin-top:14px">หลังส่งแล้วไม่สามารถเปลี่ยนแปลงผู้เข้าสอบและรอบสอบได้ ระบบจะส่งสรุปข้อมูลไปที่อีเมลของท่าน</p><div id="e_sub"></div>`+nav("ยืนยันและส่งข้อมูล");
+  $("#next").onclick=async()=>{
+    const b=$("#next");b.disabled=true;b.textContent="กำลังส่งข้อมูล...";
     try{
-      const r = await api({action:"submit", ...S.d});
-      if(r.ok){ S.hist=[]; S.step="done"; render(); return; }
-      $("#e_sub").textContent = r.message || "ส่งข้อมูลไม่สำเร็จ";
-    }catch(_){ $("#e_sub").textContent="เชื่อมต่อระบบไม่ได้ กรุณาลองใหม่อีกครั้ง"; }
-    b.disabled=false; b.textContent="ยืนยันและส่งข้อมูล";
+      const p={...S.d,action:"submit",examDate:d.date,needEquip:d.equip==="yes",needTax:d.needTax==="yes"};
+      if(!p.needEquip)p.file=null;if(!p.needTax)p.tax={};
+      const r=await api(p);
+      if(r.ok){S.hist=[];S.step="done";render();return}
+      $("#e_sub").innerHTML=`<div class="ve">${esc(r.error||r.message||"ส่งข้อมูลไม่สำเร็จ")}</div>`;
+    }catch(_){$("#e_sub").innerHTML='<div class="ve">เชื่อมต่อระบบไม่ได้ กรุณาลองใหม่อีกครั้ง</div>'}
+    b.disabled=false;b.textContent="ยืนยันและส่งข้อมูล";
   };
 }
 
 function done(){
-  const d=S.d, dt=DATES.find(x=>x.v===d.date);
-  $("#view").innerHTML = `<div class="done"><div class="tick">✓</div>` + (d.option==="refund"
-    ? `<p><b>ทางศูนย์ได้รับข้อมูลการขอยกเลิก Refund ของท่านเรียบร้อยแล้ว</b><br>ทางศูนย์สอบจะดำเนินการโอนเงินคืน ภายใน 7 วัน หลังจากได้รับข้อมูล และตรวจสอบอย่างสมบูรณ์แล้ว</p>`
-    : `<p><b>ส่งข้อมูลเรียบร้อยแล้ว</b><br>ระบบเปลี่ยนรอบสอบของท่านเป็น ${dt?dt.t:""} เวลา 17.00 น. และส่งอีเมลยืนยันไปที่ ${esc(d.email)} แล้ว</p>`) + `</div>`;
+  $("#view").innerHTML=`<div class="done"><div class="tick">✓</div><p><b>ส่งแบบฟอร์มยืนยันการจองสอบเรียบร้อยแล้ว</b><br>ระบบส่งสรุปข้อมูลไปที่ ${esc(S.d.email)} แล้ว (หากไม่พบ กรุณาตรวจสอบในจดหมายขยะ)</p></div>`;
 }
 
-render();
+async function load(){
+  $("#view").textContent="กำลังโหลด...";
+  let why="";
+  for(let i=0;i<2;i++){                       // ลองซ้ำ 1 ครั้ง (GAS เริ่มทำงานครั้งแรกอาจช้า)
+    const ac=new AbortController(),t=setTimeout(()=>ac.abort(),20000);
+    try{
+      const r=await fetch(API_URL,{signal:ac.signal});clearTimeout(t);
+      const j=await r.json();
+      if(!j.ok)throw new Error(j.error||"server error");
+      CFG=j.config;
+      $("#ttl").textContent=CFG.title;$("#sub").textContent=CFG.subtitle||"";
+      if(!CFG.open){$("#bar").style.display="none";$("#view").innerHTML=`<div class="done"><p><b>${esc(CFG.closedMessage)}</b></p></div>`;return}
+      return render();
+    }catch(e){clearTimeout(t);why=e.name==="AbortError"?"ระบบตอบกลับช้าเกิน 20 วินาที":String(e.message||e);console.error(e)}
+  }
+  $("#view").innerHTML=`<div class="ve">โหลดข้อมูลไม่สำเร็จ (${esc(why)})</div><div class="row"><button class="pri" onclick="load()">ลองใหม่</button></div>`;
+}
+load();
 </script>
 </body>
 </html>

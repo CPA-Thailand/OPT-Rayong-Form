@@ -301,7 +301,7 @@ function review(){
       if(r.ok){S.hist=[];S.step="done";render();return}
       $("#e_sub").innerHTML=`<div class="ve">${esc(r.error||r.message||"ส่งข้อมูลไม่สำเร็จ")}</div>`;
     }catch(_){$("#e_sub").innerHTML='<div class="ve">เชื่อมต่อระบบไม่ได้ กรุณาลองใหม่อีกครั้ง</div>'}
-    b.disabled=false;b.textContent="Confirmed and submit /  ยืนยันและส่งข้อมูล";
+    b.disabled=false;b.textContent="Confirm and Submit /  ยืนยันและส่งข้อมูล";
   };
 }
 

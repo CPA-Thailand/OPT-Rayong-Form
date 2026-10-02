@@ -79,7 +79,7 @@ footer{background:#2B2B2B;padding:18px 32px;text-align:center;font-size:11px;col
 
 <script>
 // ▼ วาง URL Web App (GAS) ของฟอร์มนี้
-const API_URL = "https://script.google.com/macros/s/AKfycbxUhpJA5Bsix9kxgskC_fLvyIoSNbA1vb6VL3f75cXO4vEaazjB0LcEH0iB20Hf25pSFQ/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycby-CmdOaHBmig0116xFsh0E8u7JJwvpNuORui5RS0x7AYLeMzeEetxB0s69gHp-dX30Hg/exec";
 // วันสอบ/รอบ/ตารางรับผล/รูป/เปิด-ปิดรับ แก้ที่ชีต Config, Dates, Rounds, ScorePickup (ไม่ต้องแก้โค้ด)
 const MAX_MB = 5;
 let CFG = null;
@@ -88,7 +88,7 @@ const $ = s => document.querySelector(s);
 const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const STEPS = ["consent","info","exam","order","equip","tax","notice","review"];
 const title = t => `<div class="card-title">${t}</div>`;
-const nav = (next="ถัดไป",back=true) => `<div class="row">${back?'<button class="sec" id="back">ย้อนกลับ</button>':''}<button class="pri" id="next">${next}</button></div>`;
+const nav = (next="Next / ถัดไป",back=true) => `<div class="row">${back?'<button class="sec" id="back">Back / ย้อนกลับ</button>':''}<button class="pri" id="next">${next}</button></div>`;
 const img = u => u ? `<img class="pic" src="${esc(u)}" alt="">` : "";
 const radios = (n,list,cur) => list.map(o=>`<label class="opt"><input type="radio" name="${n}" value="${esc(o.v)}" ${cur===o.v?"checked":""}><div><b>${esc(o.l)}</b></div></label>`).join("");
 
@@ -124,7 +124,7 @@ function consent(){
   <p style="font-size:13.5px;line-height:1.8;margin-bottom:14px">By completing this form, the applicant consents to CPA (Thailand) accessing, collecting, and using their personal data as evidence for TOEIC test reservation, for issuing receipts/tax invoices, and for contacting the applicant when necessary. CPA (Thailand) will not disclose any personally identifiable information to any other organizations.
 
 ในการกรอกแบบฟอร์มนี้ ผู้กรอกได้ยินยอมให้ CPA (Thailand) เข้าถึง รวบรวม และนำข้อมูลไปใช้เป็นหลักฐานสำหรับการสำรองสอบ TOEIC  สำหรับออกใบเสร็จรับเงิน/ใบกำกับภาษี และสำหรับติดต่อกับผู้กรอกในกรณีที่เกี่ยวข้องเท่านั้น   ทั้งนี้ CPA (Thailand) จะไม่เปิดเผยข้อมูลที่สามารถระบุถึงตัวตนของผู้กรอกได้โดยตรงต่อองค์กรอื่นใดอีก</p>
-  <label class="chk"><input type="checkbox" id="ck" ${S.d.consent?"checked":""}><span>Consent / ยินยอม<span style="color:var(--red)">*</span></span></label><div class="err" id="e_ck"></div>`+nav("Next / ถัดไป",false);
+  <label class="chk"><input type="checkbox" id="ck" ${S.d.consent?"checked":""}><span>Consent / ยินยอม<span style="color:var(--red)">*</span></span></label><div class="err" id="e_ck"></div>`+nav("Next / ",false);
   $("#next").onclick=()=>{ if(!$("#ck").checked){setErr("ck","กรุณากดยินยอมก่อนดำเนินการต่อ");return} S.d.consent=true;go("info") };
 }
 
@@ -291,7 +291,7 @@ function review(){
     ${row("Medical devices / อุปกรณ์เสริมพิเศษ",d.equip==="yes"?d.equipDetail+" (แนบไฟล์: "+d.file.name+")":"ไม่มี")}
     ${row("Tax Receipt / ขอใบเสร็จ/ใบกำกับภาษี",d.needTax==="yes"?"ต้องการ":"ไม่ต้องการ")}
     ${d.needTax==="yes"?row("ในนาม",t.type==="company"?"องค์กร":"บุคคล")+(t.type==="company"?row("ชื่อองค์กร",t.name)+row("เลขประจำตัวผู้เสียภาษี",t.taxId)+row("สำนักงาน",t.branchType==="head"?"Head Office":"Branch "+t.branchNo):"")+row("ที่อยู่",t.address):""}</dl>
-    <p class="hint" style="margin-top:14px">After the form has been submitted, the test taker's information cannot be changed. / หลังส่งแล้วไม่สามารถเปลี่ยนแปลงผู้เข้าสอบและรอบสอบได้ ระบบจะส่งสรุปข้อมูลไปที่อีเมลของท่าน</p><div id="e_sub"></div>`+nav("ยืนยันและส่งข้อมูล");
+    <p class="hint" style="margin-top:14px">After the form has been submitted, the test taker's information cannot be changed. / หลังส่งแล้วไม่สามารถเปลี่ยนแปลงผู้เข้าสอบและรอบสอบได้ ระบบจะส่งสรุปข้อมูลไปที่อีเมลของท่าน</p><div id="e_sub"></div>`+nav("Confirm and Submit / ยืนยันและส่งข้อมูล");
   $("#next").onclick=async()=>{
     const b=$("#next");b.disabled=true;b.textContent="กำลังส่งข้อมูล...";
     try{

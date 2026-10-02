@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>แบบฟอร์มยืนยันการจองสอบ TOEIC ระยอง — CPA Thailand</title>
+<title>TOEIC Open Testing Rayong แบบฟอร์มยืนยันสำหรับการจองสอบ จังหวัดระยอง — CPA Thailand</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -120,24 +120,26 @@ function render(){
 }
 
 function consent(){
-  $("#view").innerHTML=title("การยินยอมใช้ข้อมูล")+`
-  <p style="font-size:13.5px;line-height:1.8;margin-bottom:14px">ในการกรอกแบบฟอร์มนี้ ผู้กรอกได้ยินยอมให้ CPA (Thailand) เข้าถึง รวบรวม และนำข้อมูลไปใช้เป็นหลักฐานสำหรับการสำรองสอบ TOEIC สำหรับออกใบเสร็จรับเงิน/ใบกำกับภาษี และสำหรับติดต่อกับผู้กรอกในกรณีที่เกี่ยวข้องเท่านั้น ทั้งนี้ CPA (Thailand) จะไม่เปิดเผยข้อมูลที่สามารถระบุถึงตัวตนของผู้กรอกได้โดยตรงต่อองค์กรอื่นใดอีก</p>
-  <label class="chk"><input type="checkbox" id="ck" ${S.d.consent?"checked":""}><span>ยินยอม <span style="color:var(--red)">*</span></span></label><div class="err" id="e_ck"></div>`+nav("ถัดไป",false);
+  $("#view").innerHTML=title("การยินยอมใช้ข้อมูล / Requesting permission to access personal information")+`
+  <p style="font-size:13.5px;line-height:1.8;margin-bottom:14px">By completing this form, the applicant consents to CPA (Thailand) accessing, collecting, and using their personal data as evidence for TOEIC test reservation, for issuing receipts/tax invoices, and for contacting the applicant when necessary. CPA (Thailand) will not disclose any personally identifiable information to any other organizations.
+
+ในการกรอกแบบฟอร์มนี้ ผู้กรอกได้ยินยอมให้ CPA (Thailand) เข้าถึง รวบรวม และนำข้อมูลไปใช้เป็นหลักฐานสำหรับการสำรองสอบ TOEIC  สำหรับออกใบเสร็จรับเงิน/ใบกำกับภาษี และสำหรับติดต่อกับผู้กรอกในกรณีที่เกี่ยวข้องเท่านั้น   ทั้งนี้ CPA (Thailand) จะไม่เปิดเผยข้อมูลที่สามารถระบุถึงตัวตนของผู้กรอกได้โดยตรงต่อองค์กรอื่นใดอีก</p>
+  <label class="chk"><input type="checkbox" id="ck" ${S.d.consent?"checked":""}><span>Consent / ยินยอม<span style="color:var(--red)">*</span></span></label><div class="err" id="e_ck"></div>`+nav("Next / ถัดไป",false);
   $("#next").onclick=()=>{ if(!$("#ck").checked){setErr("ck","กรุณากดยินยอมก่อนดำเนินการต่อ");return} S.d.consent=true;go("info") };
 }
 
 function info(){
   const d=S.d,pm=(d.dob||"").match(/^(\w{3}) (\d{1,2}), (\d{4})$/)||[];
-  $("#view").innerHTML=title("ข้อมูลของผู้สอบ")+`
-  <div class="notice warn"><div class="nh">คำเตือน</div><div class="nb">กรุณากรอกข้อมูล<b>ของผู้สอบ</b>ด้วยความระมัดระวัง และตรวจสอบให้ถูกต้องก่อนส่งแบบฟอร์ม</div></div>
-  <div class="field"><label class="l" for="email">อีเมล <span class="req">*</span></label><input id="email" type="email" autocomplete="email" value="${esc(d.email)}"><div class="err" id="e_email"></div></div>
-  <div class="field"><label class="l">สัญชาติ / Nationality <span class="req">*</span></label>${radios("idType",[{v:"thai",l:"ผู้สอบสัญชาติไทย / Thai"},{v:"foreign",l:"ผู้สอบต่างชาติ / Non-Thai (Passport)"}],d.idType)}</div>
+  $("#view").innerHTML=title("Test taker information / ข้อมูลของผู้สอบ")+`
+  <div class="notice warn"><div class="nh">คำเตือน</div><div class="nb">Please enter the test taker’s information carefully. / กรุณากรอกข้อมูล<b>ของผู้สอบ</b>ด้วยความระมัดระวัง และตรวจสอบให้ถูกต้องก่อนส่งแบบฟอร์ม</div></div>
+  <div class="field"><label class="l" for="email">Email / อีเมล <span class="req">*</span></label><input id="email" type="email" autocomplete="email" value="${esc(d.email)}"><div class="err" id="e_email"></div></div>
+  <div class="field"><label class="l">Nationality / สัญชาติ<span class="req">*</span></label>${radios("idType",[{v:"thai",l:"ผู้สอบสัญชาติไทย / Thai"},{v:"foreign",l:"ผู้สอบต่างชาติ / Non-Thai Nationals"}],d.idType)}</div>
   <div class="field"><label class="l" for="id" id="idLbl"></label><input id="id" type="text" autocomplete="off" value="${esc(d.id)}"><div class="hint" id="idHint"></div><div class="err" id="e_id"></div></div>
-  <div class="field"><label class="l" for="name">ชื่อ-นามสกุล ภาษาอังกฤษ ไม่ต้องใส่คำนำหน้า <span class="req">*</span></label><input id="name" type="text" autocomplete="name" value="${esc(d.name)}"><div class="hint">สะกดให้ตรงตามบัตรประชาชน ใบขับขี่สมาร์ทการ์ด หรือ Passport ตัวอย่าง Jaidee Meesuk / Peter Louise Butler</div><div class="err" id="e_name"></div></div>
-  <div class="field"><label class="l">เพศ</label>${radios("gender",[{v:"Male",l:"Male"},{v:"Female",l:"Female"}],d.gender)}</div>
-  <div class="field"><label class="l" for="dob">วันเกิดของผู้สอบ (เดือน/วัน/ปี ค.ศ.) <span class="req">*</span></label><div class="dob"><select id="dobM"><option value="">เดือน</option>${MON.map(m=>`<option ${pm[1]===m?"selected":""}>${m}</option>`).join("")}</select><select id="dobD"><option value="">วัน</option>${Array.from({length:31},(_,i)=>i+1).map(n=>`<option ${+pm[2]===n?"selected":""}>${n}</option>`).join("")}</select><select id="dobY"><option value="">ปี ค.ศ.</option>${Array.from({length:81},(_,i)=>new Date().getFullYear()-10-i).map(n=>`<option ${+pm[3]===n?"selected":""}>${n}</option>`).join("")}</select></div><div class="hint">เลือกเดือน วัน และปี ค.ศ. ระบบจะบันทึกในรูปแบบเดียวกัน เช่น Dec 25, 1999</div><div class="err" id="e_dob"></div></div>
-  <div class="field"><label class="l" for="phone">เบอร์โทรติดต่อของผู้สอบ <span class="req">*</span></label><input id="phone" type="tel" inputmode="numeric" maxlength="10" value="${esc(d.phone)}"><div class="hint">ตัวอย่าง 0812345678</div><div class="err" id="e_phone"></div></div>`+nav();
-  const idUi=()=>{const t=pick("idType")==="thai";$("#idLbl").innerHTML=t?'เลขบัตรประจำตัวประชาชน 13 หลัก ของผู้สอบ <span class="req">*</span>':'เลขหนังสือเดินทาง / Passport ID <span class="req">*</span>';$("#idHint").textContent=t?"ตัวอย่าง 1123456789999":"Example: XX1234567";$("#id").maxLength=t?13:15;$("#id").inputMode=t?"numeric":"text"};
+  <div class="field"><label class="l" for="name">Enter the test taker’s full name exactly as shown on the passport (no title). / ชื่อ-นามสกุล ภาษาอังกฤษ ไม่ต้องใส่คำนำหน้า <span class="req">*</span></label><input id="name" type="text" autocomplete="name" value="${esc(d.name)}"><div class="hint">สะกดให้ตรงตามบัตรประชาชน ใบขับขี่สมาร์ทการ์ด หรือ Passport ตัวอย่าง Jaidee Meesuk / Peter Louise Butler</div><div class="err" id="e_name"></div></div>
+  <div class="field"><label class="l">Gender / เพศ</label>${radios("gender",[{v:"Male",l:"Male"},{v:"Female",l:"Female"}],d.gender)}</div>
+  <div class="field"><label class="l" for="dob">Enter Date of birth / วันเกิดของผู้สอบ (เดือน/วัน/ปี ค.ศ.) <span class="req">*</span></label><div class="dob"><select id="dobM"><option value="">เดือน</option>${MON.map(m=>`<option ${pm[1]===m?"selected":""}>${m}</option>`).join("")}</select><select id="dobD"><option value="">วัน</option>${Array.from({length:31},(_,i)=>i+1).map(n=>`<option ${+pm[2]===n?"selected":""}>${n}</option>`).join("")}</select><select id="dobY"><option value="">ปี ค.ศ.</option>${Array.from({length:81},(_,i)=>new Date().getFullYear()-10-i).map(n=>`<option ${+pm[3]===n?"selected":""}>${n}</option>`).join("")}</select></div><div class="hint">เลือกเดือน วัน และปี ค.ศ. ระบบจะบันทึกในรูปแบบเดียวกัน เช่น Dec 25, 1999</div><div class="err" id="e_dob"></div></div>
+  <div class="field"><label class="l" for="phone"> Enter test taker’s contact number / เบอร์โทรติดต่อของผู้สอบ <span class="req">*</span></label><input id="phone" type="tel" inputmode="numeric" maxlength="10" value="${esc(d.phone)}"><div class="hint">ตัวอย่าง 0812345678</div><div class="err" id="e_phone"></div></div>`+nav();
+  const idUi=()=>{const t=pick("idType")==="thai";$("#idLbl").innerHTML=t?'เลขบัตรประจำตัวประชาชน 13 หลัก ของผู้สอบ <span class="req">*</span>':'Enter the complete passport ID <span class="req">*</span>';$("#idHint").textContent=t?"ตัวอย่าง 1123456789999":"Example: XX1234567";$("#id").maxLength=t?13:15;$("#id").inputMode=t?"numeric":"text"};
   document.querySelectorAll("input[name=idType]").forEach(r=>r.onchange=idUi);idUi();
   $("#next").onclick=async()=>{
     const it=pick("idType")||"thai",v={email:$("#email").value.trim(),idType:it,id:it==="thai"?$("#id").value.replace(/\D/g,""):$("#id").value.replace(/[^A-Za-z0-9]/g,"").toUpperCase(),name:$("#name").value.trim().replace(/\s+/g," "),gender:pick("gender"),dob:dobVal(),phone:$("#phone").value.replace(/\D/g,"")};
@@ -161,8 +163,8 @@ function info(){
 function exam(){
   const d=S.d;if(CFG.dates.length===1&&!d.date)d.date=CFG.dates[0].v;
   $("#view").innerHTML=title("วันสอบ รอบสอบ และการรับผลสอบ / TEST DATE & SCORE PICK-UP")+`
-  <div class="field"><label class="l">ระบุวันสอบให้ตรงกับรอบที่ท่านสั่งซื้อ <span class="req">*</span></label>${radios("date",CFG.dates.map(x=>({v:x.v,l:x.l})),d.date)}<div class="err" id="e_date"></div></div>
-  <div class="field"><label class="l">ระบุรอบสอบให้ตรงกับรอบที่ท่านสั่งซื้อ <span class="req">*</span></label>${radios("round",CFG.rounds.map(x=>({v:x.v,l:x.l})),d.round)}<div class="err" id="e_round"></div></div>
+  <div class="field"><label class="l">TEST DATE / ระบุวันสอบให้ตรงกับรอบที่ท่านสั่งซื้อ <span class="req">*</span></label>${radios("date",CFG.dates.map(x=>({v:x.v,l:x.l})),d.date)}<div class="err" id="e_date"></div></div>
+  <div class="field"><label class="l">TEST TIME / ระบุรอบสอบให้ตรงกับรอบที่ท่านสั่งซื้อ <span class="req">*</span></label>${radios("round",CFG.rounds.map(x=>({v:x.v,l:x.l})),d.round)}<div class="err" id="e_round"></div></div>
   <div class="notice warn" style="margin-top:20px"><div class="nh">SCORE PICK-UP / ผลคะแนนสอบ</div><div class="nb">${esc(CFG.emsNotice)}</div></div>
   <label class="chk"><input type="checkbox" id="ackScore" ${d.ackScore?"checked":""}><span>Acknowledge / รับทราบ: ผลสอบส่งทาง EMS เท่านั้น ผู้สอบเขียนจ่าหน้าซองที่อยู่สำหรับจัดส่งผลสอบด้วยตนเองในวันสอบ <span style="color:var(--red)">*</span></span></label><div class="err" id="e_ack"></div>`+nav();
   $("#next").onclick=()=>{
@@ -174,9 +176,9 @@ function exam(){
 }
 
 function order(){
-  $("#view").innerHTML=title("หมายเลขคำสั่งซื้อ")+`
-  <div class="field"><label class="l" for="orderNo">กรุณาระบุหมายเลขคำสั่งซื้อ / Order No. ของท่าน <span class="req">*</span></label>
-  <input id="orderNo" type="text" inputmode="numeric" maxlength="30" value="${esc(S.d.orderNo)}"><div class="hint">ตัวอย่าง 2024051757316888 (ระบุเฉพาะตัวเลข)</div><div class="err" id="e_orderNo"></div></div>${img(CFG.images.order)}`+nav();
+  $("#view").innerHTML=title("Order number / หมายเลขคำสั่งซื้อ")+`
+  <div class="field"><label class="l" for="orderNo">Enter your order number / กรุณาระบุหมายเลขคำสั่งซื้อ Order No. ของท่าน <span class="req">*</span></label>
+  <input id="orderNo" type="text" inputmode="numeric" maxlength="30" value="${esc(S.d.orderNo)}"><div class="hint">ตัวอย่าง Ex. 2024051757316888 (Number Only / ระบุเฉพาะตัวเลข)</div><div class="err" id="e_orderNo"></div></div>${img(CFG.images.order)}`+nav();
   $("#next").onclick=()=>{
     const v=$("#orderNo").value.replace(/\s/g,"");
     if(!/^\d{6,}$/.test(v)){setErr("orderNo","หมายเลขคำสั่งซื้อต้องเป็นตัวเลขเท่านั้น");return}
@@ -186,12 +188,14 @@ function order(){
 
 function equip(){
   const d=S.d;
-  $("#view").innerHTML=title("อุปกรณ์เสริมพิเศษทางการแพทย์")+`
-  <label class="l">ผู้สอบมีความจำเป็นต้องใช้อุปกรณ์เสริมพิเศษทางการแพทย์ หรืออุปกรณ์อื่นๆ ที่จำเป็นต่อร่างกายไม่ว่าชนิดใดก็ตาม ทั้งแบบชั่วคราวและถาวร เช่น อุปกรณ์ตามกระดูก (เฝือก) อุปกรณ์ช่วยฟัง เครื่องกระตุ้นหัวใจ Insulin Pump เก้าอี้มีล้อสำหรับผู้ป่วย (Wheelchair) <span class="req">*</span></label>
-  ${radios("equip",[{v:"yes",l:"มี"},{v:"no",l:"ไม่มี"}],d.equip)}<div class="err" id="e_equip"></div>
+  $("#view").innerHTML=title("Medical devices / อุปกรณ์เสริมพิเศษทางการแพทย์")+`
+  <label class="l">Test taker requires the use of medical devices of any kind during the test such as hearing aids, heart monitors, insulin pumps or wheelchairs.
+
+ผู้สอบมีความจำเป็นต้องใช้อุปกรณ์เสริมพิเศษทางการแพทย์ หรืออุปกรณ์อื่นๆ ที่จำเป็นต่อร่างกายไม่ว่าชนิดใดก็ตาม ทั้งแบบชั่วคราวและถาวร เช่น อุปกรณ์ดามกระดูก (เฝือก) อุปกรณ์ช่วยฟัง เครื่องกระตุ้นหัวใจ Insulin Pump เก้าอี้มีล้อสำหรับผู้ป่วย (Wheelchair) เป็นต้น <span class="req">*</span></label>
+  ${radios("equip",[{v:"yes",l:"Yes / มี"},{v:"no",l:"No / ไม่มี"}],d.equip)}<div class="err" id="e_equip"></div>
   <div id="eq" class="${d.equip==="yes"?"":"hide"}">
-    <div class="field"><label class="l" for="equipDetail">โปรดระบุอุปกรณ์ที่ต้องใช้ในระหว่างการสอบ <span class="req">*</span></label><input id="equipDetail" type="text" value="${esc(d.equipDetail)}"><div class="err" id="e_equipDetail"></div></div>
-    <div class="field"><label class="l">แนบหลักฐานภาพถ่ายอุปกรณ์ หรือใบรับรองแพทย์อายุไม่เกิน 2 ปี หรือบัตรประจำตัวผู้พิการ <span class="req">*</span></label>
+    <div class="field"><label class="l" for="equipDetail">Specify any medical devices you need to use during the test. / โปรดระบุอุปกรณ์ที่ต้องใช้ในระหว่างการสอบ<span class="req">*</span></label><input id="equipDetail" type="text" value="${esc(d.equipDetail)}"><div class="err" id="e_equipDetail"></div></div>
+    <div class="field"><label class="l">โปรดแนบหลักฐานภาพถ่าย อุปกรณ์เสริมพิเศษทางการแพทย์ หรือ ใบรับรองแพทย์อายุไม่เกิน 2 ปี หรือ บัตรประจำตัวผู้พิการ เพื่อประกอบการพิจารณา / Please attach the document Example: medical devices / medical certificate <span class="req">*</span></label>
     <input type="file" id="file" accept="image/*,.pdf"><div class="hint" id="fname">รูปภาพหรือ PDF ไม่เกิน ${MAX_MB} MB ${d.file?"— แนบแล้ว: "+esc(d.file.name):""}</div><div class="err" id="e_file"></div></div>
   </div>`+nav();
   document.querySelectorAll("input[name=equip]").forEach(r=>r.onchange=()=>$("#eq").classList.toggle("hide",r.value!=="yes"));
@@ -218,20 +222,21 @@ const tin=(id,lbl,hint,val,ph="")=>`<div class="field"><label class="l" for="${i
 function tax(){
   const d=S.d,t=d.tax;
   $("#view").innerHTML=title("การขอใบเสร็จรับเงิน/ใบกำกับภาษี / RECEIPT/TAX INVOICE")+`
-  <div class="notice warn"><div class="nh">โปรดอ่าน / Please note</div><div class="nb">ส่วนนี้ไม่ใช่การกรอกข้อมูลเพื่อส่งผลคะแนน เฉพาะผู้ที่ต้องการใบเสร็จรับเงิน/ใบกำกับภาษีเพื่อนำไปเบิกค่าใช้จ่ายกับองค์กรหรือสถาบันเท่านั้น<br>This section is only for Test Takers who need a receipt/tax invoice.</div></div>
-  <label class="l">ผู้สอบมีความต้องการขอใบเสร็จรับเงิน/ใบกำกับภาษี หรือไม่ <span class="req">*</span></label>
+  <div class="notice warn"><div class="nh">โปรดอ่าน / Please note</div><div class="nb">** This section is not for score results submission.It is intended only for individuals who require a receipt/tax invoice for reimbursement by their organization or institution ** 
+  ** ข้อมูลส่วนนี้ไม่ใช่การกรอกข้อมูลเพื่อส่งผลคะแนน เฉพาะบุคคลที่ต้องการใบเสร็จรับเงิน/ใบกำกับภาษีเพื่อนำไปเบิกค่าใช้จ่ายกับทางองค์กรหรือสถาบันเท่านั้น **  <br>This section is only for Test Takers who need a receipt/tax invoice.</div></div>
+  <label class="l">RECEIPT/TAX INVOICE NEEDED / ผู้สอบมีความต้องการขอใบเสร็จรับเงิน/ใบกำกับภาษี หรือไม่ <span class="req">*</span></label>
   ${radios("needTax",[{v:"yes",l:"Yes / ต้องการใบเสร็จรับเงิน / ใบกำกับภาษี"},{v:"no",l:"No / ไม่ต้องการ"}],d.needTax)}<div class="err" id="e_needTax"></div>
   <div id="tx" class="${d.needTax==="yes"?"":"hide"}">
    <label class="l" style="margin-top:14px">ขอใบเสร็จรับเงิน/ใบกำกับภาษีในนาม / ON BEHALF OF <span class="req">*</span></label>
    ${radios("taxType",[{v:"company",l:"COMPANY / ORGANIZATION / ในนามองค์กร"},{v:"personal",l:"PERSONAL / ในนามส่วนบุคคล"}],t.type)}<div class="err" id="e_taxType"></div>
    <div id="tc" class="${t.type==="company"?"":"hide"}">${img(CFG.images.taxOrg)}
-    ${tin("taxName","ชื่อองค์กรที่ต้องการให้ระบุในใบเสร็จ/ใบกำกับภาษี (ภาษาอังกฤษเท่านั้น)","",t.name)}
-    ${tin("taxId","หมายเลขประจำตัวผู้เสียภาษี 13 หลัก","",t.taxId)}
+    ${tin("taxName","ENTER TEST TAKER'S NAME / ORGANIZATION NAME FOR RECEIPT/TAX INVOICE / ชื่อองค์กรที่ต้องการให้ระบุในใบเสร็จ/ใบกำกับภาษี (ภาษาอังกฤษเท่านั้น)","",t.name)}
+    ${tin("taxId","TAX NUMBER / หมายเลขประจำตัวผู้เสียภาษี 13 หลัก","",t.taxId)}
     <label class="l">สำนักงาน / FOR ORGANIZATION <span class="req">*</span></label>
     ${radios("branchType",[{v:"head",l:"Head Office / สำนักงานใหญ่"},{v:"branch",l:"Branch / สำนักงานสาขา"}],t.branchType)}<div class="err" id="e_branchType"></div>
     <div id="tb" class="${t.branchType==="branch"?"":"hide"}">${tin("branchNo","เลขสาขา / Branch No.","",t.branchNo)}</div></div>
    <div id="tp" class="${t.type==="personal"?"":"hide"}">${img(CFG.images.taxPersonal)}</div>
-   <div id="ta" class="${t.type?"":"hide"}">${tin("taxAddr","ที่อยู่สำหรับออกใบเสร็จ/ใบกำกับภาษี (ภาษาอังกฤษเท่านั้น)","",t.address)}
+   <div id="ta" class="${t.type?"":"hide"}">${tin("taxAddr","ADDRESS FOR TAX INVOICE / ที่อยู่สำหรับออกใบเสร็จ/ใบกำกับภาษี (ภาษาอังกฤษเท่านั้น)","",t.address)}
     ${img(CFG.images.taxInfo)}
     <label class="chk"><input type="checkbox" id="ackTax" ${d.ackTax?"checked":""}><span>I acknowledge all important information for Tax Invoice Request. ข้าพเจ้ารับทราบหมายเหตุสำคัญสำหรับการขอใบกำกับภาษีเรียบร้อยแล้ว <span style="color:var(--red)">*</span></span></label><div class="err" id="e_ackTax"></div></div>
   </div>`+nav();
@@ -264,8 +269,8 @@ function tax(){
 
 function notice(){
   $("#view").innerHTML=title("การรายงานตัวและหลักฐานที่ต้องแสดงในวันสอบ / TEST DAY PROCEDURES")+`
-  <p style="font-size:13.5px;line-height:1.8;margin-bottom:12px"><b>สถานที่สอบ:</b> ${esc(CFG.venue)}<br>${CFG.rounds.map(x=>esc(x.l)).join("<br>")}</p>
-  <p style="font-size:13.5px;line-height:1.8;margin-bottom:12px"><b>หลักฐานที่ต้องแสดง:</b> บัตรประจำตัวประชาชนไทย, ใบขับขี่สมาร์ทการ์ด (บัตรแข็ง) หรือหนังสือเดินทาง (Passport) ฉบับจริง สภาพสมบูรณ์ ข้อมูลและรูปถ่ายเป็นปัจจุบัน ชัดเจนไม่เลือนราง และไม่หมดอายุ</p>
+  <p style="font-size:13.5px;line-height:1.8;margin-bottom:12px"><b>Test Location / สถานที่สอบ:</b> ${esc(CFG.venue)}<br>${CFG.rounds.map(x=>esc(x.l)).join("<br>")}</p>
+  <p style="font-size:13.5px;line-height:1.8;margin-bottom:12px"><b>Documents Required on the Test Day / หลักฐานที่ต้องแสดง:</b> For Non Thai Nationals : Passport / บัตรประจำตัวประชาชนไทย, ใบขับขี่สมาร์ทการ์ด (บัตรแข็ง) หรือหนังสือเดินทาง (Passport) ฉบับจริง สภาพสมบูรณ์ ข้อมูลและรูปถ่ายเป็นปัจจุบัน ชัดเจนไม่เลือนราง และไม่หมดอายุ</p>
   ${img(CFG.images.items)}
   <div class="notice"><div class="nh">โปรดอ่านและรับทราบ / Please read and acknowledge</div><div class="nb"><ul>
    <li>ผู้สอบต้องมารายงานตัว ณ สถานที่สอบ <b>ก่อนเวลารอบสอบ 1 ชั่วโมง</b> เคาน์เตอร์เช็คอินจะปิดให้บริการ 15 นาที ก่อนถึงเวลารอบสอบ พร้อมแสดงหลักฐานให้ครบถ้วน หากมาไม่ทันเวลา ศูนย์สอบฯ ขอสงวนสิทธิ์ปฏิเสธให้เข้าห้องสอบ และไม่คืนค่าสอบในทุกกรณี</li>
@@ -280,13 +285,13 @@ function notice(){
 function review(){
   const d=S.d,t=d.tax,dl=(CFG.dates.find(x=>x.v===d.date)||{}).l,rl=(CFG.rounds.find(x=>x.v===d.round)||{}).l;
   const row=(k,v)=>`<dt>${k}</dt><dd>${esc(v)}</dd>`;
-  $("#view").innerHTML=title("ตรวจสอบข้อมูล")+`<dl>
-    ${row("อีเมล",d.email)}${row(d.idType==="thai"?"เลขบัตรประชาชน":"Passport ID",d.id)}${row("ชื่อ-นามสกุล",d.name)}${row("เพศ",d.gender||"-")}${row("วันเกิด",d.dob)}${row("เบอร์โทรศัพท์",d.phone)}
-    ${row("วันสอบ",dl)}${row("รอบสอบ",rl)}${row("สถานที่สอบ",CFG.venue)}${row("หมายเลขคำสั่งซื้อ",d.orderNo)}
-    ${row("อุปกรณ์เสริมพิเศษ",d.equip==="yes"?d.equipDetail+" (แนบไฟล์: "+d.file.name+")":"ไม่มี")}
-    ${row("ขอใบเสร็จ/ใบกำกับภาษี",d.needTax==="yes"?"ต้องการ":"ไม่ต้องการ")}
+  $("#view").innerHTML=title("Information / ตรวจสอบข้อมูล")+`<dl>
+    ${row("Email / อีเมล",d.email)}${row(d.idType==="thai"?"เลขบัตรประชาชน":"Passport ID",d.id)}${row("ชื่อ-นามสกุล",d.name)}${row("เพศ",d.gender||"-")}${row("วันเกิด",d.dob)}${row("เบอร์โทรศัพท์",d.phone)}
+    ${row("Test Date / วันสอบ",dl)}${row("Test Time / รอบสอบ",rl)}${row("Location / สถานที่สอบ",CFG.venue)}${row("Order No. / หมายเลขคำสั่งซื้อ",d.orderNo)}
+    ${row("Medical devices / อุปกรณ์เสริมพิเศษ",d.equip==="yes"?d.equipDetail+" (แนบไฟล์: "+d.file.name+")":"ไม่มี")}
+    ${row("Tax Receipt / ขอใบเสร็จ/ใบกำกับภาษี",d.needTax==="yes"?"ต้องการ":"ไม่ต้องการ")}
     ${d.needTax==="yes"?row("ในนาม",t.type==="company"?"องค์กร":"บุคคล")+(t.type==="company"?row("ชื่อองค์กร",t.name)+row("เลขประจำตัวผู้เสียภาษี",t.taxId)+row("สำนักงาน",t.branchType==="head"?"Head Office":"Branch "+t.branchNo):"")+row("ที่อยู่",t.address):""}</dl>
-    <p class="hint" style="margin-top:14px">หลังส่งแล้วไม่สามารถเปลี่ยนแปลงผู้เข้าสอบและรอบสอบได้ ระบบจะส่งสรุปข้อมูลไปที่อีเมลของท่าน</p><div id="e_sub"></div>`+nav("ยืนยันและส่งข้อมูล");
+    <p class="hint" style="margin-top:14px">After the form has been submitted, the test taker's information cannot be changed. / หลังส่งแล้วไม่สามารถเปลี่ยนแปลงผู้เข้าสอบและรอบสอบได้ ระบบจะส่งสรุปข้อมูลไปที่อีเมลของท่าน</p><div id="e_sub"></div>`+nav("ยืนยันและส่งข้อมูล");
   $("#next").onclick=async()=>{
     const b=$("#next");b.disabled=true;b.textContent="กำลังส่งข้อมูล...";
     try{
@@ -296,7 +301,7 @@ function review(){
       if(r.ok){S.hist=[];S.step="done";render();return}
       $("#e_sub").innerHTML=`<div class="ve">${esc(r.error||r.message||"ส่งข้อมูลไม่สำเร็จ")}</div>`;
     }catch(_){$("#e_sub").innerHTML='<div class="ve">เชื่อมต่อระบบไม่ได้ กรุณาลองใหม่อีกครั้ง</div>'}
-    b.disabled=false;b.textContent="ยืนยันและส่งข้อมูล";
+    b.disabled=false;b.textContent="Confirmed and submit /  ยืนยันและส่งข้อมูล";
   };
 }
 
